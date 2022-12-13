@@ -83,6 +83,10 @@ contract NftMarketplace is ReentrancyGuard {
         address feeRecipient;
     }
 
+    bytes4 private constant INTERFACE_ID_ERC20 = 0x36372b07;
+    bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
+    bytes4 private constant INTERFACE_ID_ERC1155 = 0xd9b67a26;
+
     /// @notice NftAddress -> Token ID -> Minter
     mapping(address => mapping(uint256 => address)) public minters;
 
@@ -365,45 +369,120 @@ contract NftMarketplace is ReentrancyGuard {
         //     "invalid nft address"
         // );
 
-        IFantomAuction auction = IFantomAuction(addressRegistry.auction());
+        // IFantomAuction auction = IFantomAuction(addressRegistry.auction());
 
-        (, , , uint256 startTime, , bool resulted) = auction.auctions(_nftAddress, _tokenId);
+        // (, , , uint256 startTime, , bool resulted) = auction.auctions(_nftAddress, _tokenId);
 
-        require(startTime == 0 || resulted == true, "cannot place an offer if auction is going on");
+        // require(startTime == 0 || resulted == true, "cannot place an offer if auction is going on");
 
-        require(_deadline > _getNow(), "invalid expiration");
+        // require(_deadline > _getNow(), "invalid expiration");
 
-        _validPayToken(address(_payToken));
+        offers[_nftAddress][_tokenId][msg.sender] = Offer(_quantity, _price, _deadline);
 
-        offers[_nftAddress][_tokenId][_msgSender()] = Offer(
-            _payToken,
-            _quantity,
-            _pricePerItem,
-            _deadline
-        );
+        emit OfferCreated(msg.sender, _nftAddress, _tokenId, _quantity, _price, _deadline);
+    }
 
-        emit OfferCreated(
-            _msgSender(),
+    /// @notice Method for canceling the offer
+    /// @param _nftAddress NFT contract address
+    /// @param _tokenId TokenId
+    function cancelOffer(
+        address _nftAddress,
+        uint256 _tokenId
+    ) external offerExists(_nftAddress, _tokenId, msg.sender) {
+        delete (offers[_nftAddress][_tokenId][msg.sender]);
+        emit OfferCanceled(msg.sender, _nftAddress, _tokenId);
+    }
+
+    /// @notice Method for accepting the offer
+    /// @param _nftAddress NFT contract address
+    /// @param _tokenId TokenId
+    /// @param _creator Offer creator address
+    function acceptOffer(
+        address _nftAddress,
+        uint256 _tokenId,
+        address _creator
+    )
+        external
+        nonReentrant
+        offerExists(_nftAddress, _tokenId, _creator)
+        isOwner(_nftAddress, _tokenId, msg.sender)
+    {
+        Offer memory offer = offers[_nftAddress][_tokenId][_creator];
+
+        uint256 price = offer.price.mul(offer.quantity);
+        uint256 feeAmount = price.mul(platformFee).div(1e3);
+        uint256 royaltyFee;
+        payable(this).transfer(_creator, feeAmount);
+        payable(feeReceipient).transfer(feeAmount);
+
+        address minter = minters[_nftAddress][_tokenId];
+        uint16 royalty = royalties[_nftAddress][_tokenId];
+
+        if (minter != address(0) && royalty != 0) {
+            royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
+            payable(this).transfer(_creator, royaltyFee);
+            payable(minter).transfer(royaltyFee);
+            feeAmount = feeAmount.add(royaltyFee);
+        } else {
+            minter = collectionRoyalties[_nftAddress].feeRecipient;
+            royalty = collectionRoyalties[_nftAddress].royalty;
+            if (minter != address(0) && royalty != 0) {
+                royaltyFee = price.sub(feeAmount).mul(royalty).div(10000);
+                payable(this).transfer(_creator, royaltyFee);
+                payable(minter).transfer(royaltyFee);
+                //offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+                feeAmount = feeAmount.add(royaltyFee);
+            }
+        }
+
+        offer.payToken.safeTransferFrom(_creator, msg.sender, price.sub(feeAmount));
+
+        // Transfer NFT to buyer
+        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721(_nftAddress).safeTransferFrom(msg.sender, _creator, _tokenId);
+        } else {
+            IERC1155(_nftAddress).safeTransferFrom(
+                msg.sender,
+                _creator,
+                _tokenId,
+                offer.quantity,
+                bytes("")
+            );
+        }
+        IFantomBundleMarketplace(addressRegistry.bundleMarketplace()).validateItemSold(
             _nftAddress,
             _tokenId,
-            _quantity,
-            address(_payToken),
-            _pricePerItem,
-            _deadline
+            offer.quantity
         );
+
+        emit ItemSold(
+            msg.sender,
+            _creator,
+            _nftAddress,
+            _tokenId,
+            offer.quantity,
+            address(offer.payToken),
+            getPrice(address(offer.payToken)),
+            offer.pricePerItem
+        );
+
+        emit OfferCanceled(_creator, _nftAddress, _tokenId);
+
+        delete (listings[_nftAddress][_tokenId][msg.sender]);
+        delete (offers[_nftAddress][_tokenId][_creator]);
     }
 
     /**
      @notice Method for withdrawing proceeds from sales
      */
     function withdrawProceeds() external {
-        uint256 proceeds = s_proceeds[msg.sender];
-        if (proceeds <= 0) {
-            revert NoProceeds();
-        }
-        s_proceeds[msg.sender] = 0;
-        (bool success, ) = payable(msg.sender).call{value: proceeds}("");
-        require(success, "Transfer failed");
+        // uint256 proceeds = s_proceeds[msg.sender];
+        // if (proceeds <= 0) {
+        //     revert NoProceeds();
+        // }
+        // s_proceeds[msg.sender] = 0;
+        // (bool success, ) = payable(msg.sender).call{value: proceeds}("");
+        // require(success, "Transfer failed");
     }
 
     //////////////////////
@@ -418,7 +497,7 @@ contract NftMarketplace is ReentrancyGuard {
     }
 
     function getProceeds(address seller) external view returns (uint256) {
-        return s_proceeds[seller];
+        // return s_proceeds[seller];
     }
 
     ////////////////////////////////////
