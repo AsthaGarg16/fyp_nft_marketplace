@@ -5,19 +5,17 @@ import Card from "./Card";
 function DetailCard() {
   return (
     <div className="card-custom w-full max-w-xs bg-white rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-700">
-      <a href="#">
-        <div className="flex justify-center">
-          <div className="card-zoom">
-            <AnimatedImage />
-          </div>
+      <div className="flex justify-center">
+        <div className="card-zoom">
+          <AnimatedImage />
         </div>
-      </a>
+      </div>
+
       <div className="px-5 pb-5">
-        <a href="#">
-          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
-          </h5>
-        </a>
+        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+        </h5>
+
         <div className="flex items-center mt-2.5 mb-2.5"></div>
         <div className="flex items-center justify-between">
           <span className="text-3xl font-bold text-gray-900 dark:text-white">
