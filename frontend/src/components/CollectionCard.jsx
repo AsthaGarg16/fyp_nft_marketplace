@@ -2,15 +2,15 @@ import React from "react";
 
 function CollectionCard() {
   return (
-    <div class="w-96 h-72 bg-white rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-96 h-72 bg-white rounded-xl shadow-md dark:bg-gray-700 ">
       <img
         src={require("../assets/nft.jpg")}
         alt="nft"
-        className="object-contain rounded-t-lg w-96 h-48"
+        className="object-cover rounded-t-lg w-96 h-48"
       />
-      <div className="flex items-stretch p-5 space-x-5">
+      <div className="flex items-center p-3 space-x-5">
         <img
-          class="w-14 h-14 rounded-full shadow-lg border-4 border-gray-800 dark:border-white"
+          class="w-16 h-16 object-cover rounded-full shadow-lg border-4 border-white dark:border-gray-400"
           src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
           alt="Bonnie image"
         />

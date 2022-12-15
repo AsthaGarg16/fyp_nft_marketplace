@@ -4,7 +4,7 @@ import Card from "./Card";
 
 function DetailCard() {
   return (
-    <div className="card-custom w-full max-w-xs bg-white rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div className="card-custom w-full max-w-xs bg-white rounded-xl shadow-md dark:bg-gray-700">
       <div className="flex justify-center">
         <div className="card-zoom">
           <AnimatedImage />
