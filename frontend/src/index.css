@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.card-custom {
+  @apply overflow-hidden shadow-xl rounded-xl;
+}
+
 .card-zoom {
   @apply relative flex items-center justify-center m-3 overflow-hidden shadow-xl w-72 h-60 rounded-xl;
 }
@@ -12,6 +16,10 @@
   @apply absolute text-5xl font-black transition-all duration-500 ease-in-out transform scale-150 text-gray-50 opacity-60;
 }
 .card-zoom:hover .card-zoom-image {
+  @apply scale-150;
+}
+
+.card-custom:hover .card-zoom-image {
   @apply scale-150;
 }
 .card-zoom:hover .card-zoom-text {
