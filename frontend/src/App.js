@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App dark:bg-gray-800">
       <Navbar />
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

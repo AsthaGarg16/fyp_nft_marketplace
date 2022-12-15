@@ -2,7 +2,7 @@ import React from "react";
 
 function CollectionCard() {
   return (
-    <div class="w-96 h-72 bg-white rounded-xl shadow-md dark:bg-gray-700 ">
+    <div class="w-96 h-72 bg-white rounded-xl shadow-lg dark:bg-gray-700 ">
       <div className="overflow-hidden ">
         <img
           src={require("../assets/nft.jpg")}

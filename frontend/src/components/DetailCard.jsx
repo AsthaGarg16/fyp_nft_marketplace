@@ -27,11 +27,11 @@ function DetailCard() {
           <div className="grid grid-cols-2 justify-items-end">
             <button
               type="button"
-              className="text-white bg-indigo-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
+              className="text-white bg-gray-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-gray-350 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8"
+                className="h-8 w-8"
                 fill="currentColor"
                 class="bi bi-heart-fill"
                 viewBox="-4 -4 24 24"
@@ -46,7 +46,7 @@ function DetailCard() {
             </button>
             <button
               type="button"
-              className="text-white bg-indigo-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
+              className="text-white bg-gray-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-gray-350 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
             >
               <svg
                 aria-hidden="true"
