@@ -27,7 +27,7 @@ function DetailCard() {
           <div className="grid grid-cols-2 justify-items-end">
             <button
               type="button"
-              className="text-white bg-gray-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-gray-350 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
+              className="text-white bg-gray-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-gray-350 dark:hover:bg-indigo-500 dark:focus:ring-indigo-400"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ function DetailCard() {
             </button>
             <button
               type="button"
-              className="text-white bg-gray-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-gray-350 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
+              className="text-white bg-gray-500 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg p-2 text-center inline-flex items-center dark:bg-gray-350 dark:hover:bg-indigo-500 dark:focus:ring-indigo-400"
             >
               <svg
                 aria-hidden="true"
