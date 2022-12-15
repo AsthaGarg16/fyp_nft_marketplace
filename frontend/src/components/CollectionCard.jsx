@@ -3,11 +3,14 @@ import React from "react";
 function CollectionCard() {
   return (
     <div class="w-96 h-72 bg-white rounded-xl shadow-md dark:bg-gray-700 ">
-      <img
-        src={require("../assets/nft.jpg")}
-        alt="nft"
-        className="object-cover rounded-t-lg w-96 h-48"
-      />
+      <div className="overflow-hidden ">
+        <img
+          src={require("../assets/nft.jpg")}
+          alt="nft"
+          className="object-cover rounded-t-lg w-96 h-48 max-w-96 max-h-48 hover:scale-125 ease-in duration-300"
+        />
+      </div>
+
       <div className="flex items-center p-3 space-x-5">
         <img
           class="w-16 h-16 object-cover rounded-full shadow-lg border-4 border-white dark:border-gray-400"
