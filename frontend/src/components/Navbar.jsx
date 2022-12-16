@@ -54,7 +54,7 @@ export default function Navbar() {
                           item.current
                             ? "bg-gray-800 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-xl font-medium"
+                          "px-3 py-2 rounded-md text-2xl font-medium"
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -64,7 +64,7 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="text-xl ">
                 <input
                   type="text"
                   className="block w-full px-4 py-2 bg-white border rounded-full focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
@@ -78,16 +78,16 @@ export default function Navbar() {
                   className="rounded-full bg-gray-900 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  <BellIcon className="h-8 w-8" aria-hidden="true" />
                 </button>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Menu.Button className="flex rounded-full bg-gray-800 text-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-12 w-12 rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt=""
                       />
@@ -109,7 +109,7 @@ export default function Navbar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-md text-gray-700"
                             )}
                           >
                             Your Profile
@@ -122,7 +122,7 @@ export default function Navbar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-md text-gray-700"
                             )}
                           >
                             Settings
@@ -135,7 +135,7 @@ export default function Navbar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-md text-gray-700"
                             )}
                           >
                             Sign out

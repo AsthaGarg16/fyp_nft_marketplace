@@ -7,7 +7,7 @@ function CollectionCard() {
         <img
           src={require("../assets/nft.jpg")}
           alt="nft"
-          className="object-cover rounded-t-lg w-96 h-48 max-w-96 max-h-48 hover:scale-150 ease-in duration-300"
+          className="object-cover rounded-t-xl w-96 h-48 max-w-96 max-h-48 hover:scale-150 ease-in duration-300"
         />
       </div>
 
