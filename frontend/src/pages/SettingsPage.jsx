@@ -51,7 +51,7 @@ function ProfileSettings() {
         </div>
         <div className="mb-4">
           <label className="text-xl">
-            <span class="text-gray-700 dark:text-white">Bio</span>
+            <span className="text-gray-700 dark:text-white">Bio</span>
             <textarea
               name="message"
               className="
@@ -71,7 +71,7 @@ function ProfileSettings() {
           </label>
         </div>
 
-        <div class="mb-8">
+        <div className="mb-8">
           <button
             type="submit"
             className="

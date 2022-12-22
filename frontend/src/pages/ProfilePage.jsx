@@ -12,19 +12,19 @@ function ProfilePage() {
         />
         <div className="flex items-center">
           <img
-            class="flex-none w-40 h-40 object-cover rounded-full shadow-lg border-6 m-5 dark:border-gray-800 border-4"
+            className="flex-none w-40 h-40 object-cover rounded-full shadow-lg border-6 m-5 dark:border-gray-800 border-4"
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
             alt="Bonnie image"
           />
           <div className="flex-auto justify-between">
             <div className="text-left">
-              <h2 class="mb-5 text-2xl font-bold text-gray-900 md:text-2xl lg:text-4xl dark:text-white">
+              <h2 className="mb-5 text-2xl font-bold text-gray-900 md:text-2xl lg:text-4xl dark:text-white">
                 Profile name
               </h2>
-              <p class="text-xl text-gray-600 md:text-lg lg:text-xl dark:text-gray-300">
+              <p className="text-xl text-gray-600 md:text-lg lg:text-xl dark:text-gray-300">
                 Wallet address
               </p>
-              <p class="text-xl text-gray-600 md:text-lg lg:text-xl dark:text-gray-300">
+              <p className="text-xl text-gray-600 md:text-lg lg:text-xl dark:text-gray-300">
                 Joining date
               </p>
             </div>

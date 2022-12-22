@@ -19,9 +19,9 @@ function CollectionCard() {
         />
         <div className="text-left items-center">
           <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            Collection name
+            Collection Name
           </h5>
-          <p classname="mb-3 font-normal text-lg text-gray-700 dark:text-gray-400">
+          <p className="mb-2 font-base text-lg text-gray-700 dark:text-gray-300">
             by User
           </p>
         </div>

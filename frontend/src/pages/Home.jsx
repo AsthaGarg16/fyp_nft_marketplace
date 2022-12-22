@@ -9,7 +9,7 @@ import TabList from "../components/TabList";
 
 function Home() {
   return (
-    // <div class="flex items-center min-h-screen">
+    // <div className="flex items-center min-h-screen">
     <div>
       <div className="flex flex-wrap justify-center">
         <Card />

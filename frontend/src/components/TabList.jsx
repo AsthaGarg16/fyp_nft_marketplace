@@ -57,7 +57,7 @@ function TabList() {
       </ul>
       <div>
         <ul className="w-6/12 divide-y divide-gray-200 dark:divide-gray-700">
-          <li class="py-3 sm:py-4">
+          <li className="py-3 sm:py-4">
             <ListItem
               img_src={
                 "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -67,7 +67,7 @@ function TabList() {
               volume={"1000"}
             />
           </li>
-          <li class="py-3 sm:py-4">
+          <li className="py-3 sm:py-4">
             <ListItem
               img_src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               name="Collection"
