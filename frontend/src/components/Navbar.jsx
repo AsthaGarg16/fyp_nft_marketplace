@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -7,11 +7,12 @@ import {
   WalletIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const navigation = [
-  { name: "Explore", href: "#", current: true },
-  { name: "Create", href: "#", current: false },
-  { name: "Stats", href: "#", current: false },
+  { name: "Explore", href: "/", current: true },
+  { name: "Create", href: "/create", current: false },
+  { name: "Stats", href: "/stat", current: false },
 ];
 
 function classNames(...classes) {
@@ -19,6 +20,22 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  const [navigation, setNavigation] = useState([
+    { name: "Explore", href: "/", current: false },
+    { name: "Create", href: "/create", current: false },
+    { name: "Stats", href: "/stat", current: false },
+  ]);
+
+  function navigateTab(tabName) {
+    for (const tab of navigation) {
+      if (tab.name === tabName) {
+        // setNavigation([{}]);
+        navigate(tab.href);
+      }
+    }
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-900">
       {({ open }) => (
@@ -41,9 +58,10 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <div
+                        onClick={() => navigateTab(item.name)}
                         key={item.name}
-                        href={item.href}
+                        // href={item.href}
                         className={classNames(
                           item.current
                             ? "bg-gray-800 text-white"
@@ -53,7 +71,7 @@ export default function Navbar() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -68,16 +86,16 @@ export default function Navbar() {
               <div className="absolute right-0 flex flex-none items-center pr-2">
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-10 w-10 stroke-2" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
-                  <span className="sr-only">View notifications</span>
+                  <span className="sr-only">View cart</span>
                   <ShoppingCartIcon
                     className="h-10 w-10 stroke-2"
                     aria-hidden="true"
@@ -85,9 +103,9 @@ export default function Navbar() {
                 </button>
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
-                  <span className="sr-only">View notifications</span>
+                  <span className="sr-only">Connect Wallet</span>
                   <WalletIcon
                     className="h-10 w-10 stroke-2"
                     aria-hidden="true"
