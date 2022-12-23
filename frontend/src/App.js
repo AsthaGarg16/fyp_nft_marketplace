@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProfilePage from "./pages/ProfilePage";
 import ExplorePage from "./pages/ExplorePage";
-import SettingsPage from "./pages/SettingsPage";
 import StatPage from "./pages/StatPage";
 import CreatePage from "./pages/CreatePage";
 
