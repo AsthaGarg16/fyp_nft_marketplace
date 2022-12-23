@@ -19,11 +19,26 @@ export default function Navbar() {
     { name: "Stats", href: "/stat", current: false },
   ];
 
+  const pages = [
+    { name: "Profile", href: "/profile" },
+    { name: "Settings", href: "/settings" },
+    { name: "Log out", href: "#" },
+  ];
+
   function navigateTab(tabName) {
     for (const tab of navigation) {
       if (tab.name === tabName) {
         // setNavigation([{}]);
         navigate(tab.href);
+      }
+    }
+  }
+
+  function GoToPage(pageName) {
+    for (const page of pages) {
+      if (page.name === pageName) {
+        // setNavigation([{}]);
+        navigate(page.href);
       }
     }
   }
@@ -126,42 +141,20 @@ export default function Navbar() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <div
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-md text-gray-700"
-                            )}
-                          >
-                            Your Profile
-                          </div>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <div
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-md text-gray-700"
-                            )}
-                          >
-                            Settings
-                          </div>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <div
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-md text-gray-700"
-                            )}
-                          >
-                            Sign out
-                          </div>
-                        )}
-                      </Menu.Item>
+                      {pages.map((item) => (
+                        <Menu.Item onClick={() => GoToPage(item.name)}>
+                          {({ active }) => (
+                            <div
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-2 py-2 text-md text-gray-700"
+                              )}
+                            >
+                              {item.name}
+                            </div>
+                          )}
+                        </Menu.Item>
+                      ))}
                     </Menu.Items>
                   </Transition>
                 </Menu>

@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
 import ExplorePage from "./pages/ExplorePage";
 import StatPage from "./pages/StatPage";
 import CreatePage from "./pages/CreatePage";
@@ -19,6 +20,7 @@ function App() {
             <Route path="/create" element={<CreatePage />} />
             <Route path="/stat" element={<StatPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </div>
       </BrowserRouter>
