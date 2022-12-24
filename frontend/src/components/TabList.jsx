@@ -9,7 +9,7 @@ function ListItem(props) {
         <img
           className="w-14 h-14 rounded-full"
           src={props.img_src}
-          alt="Neil image"
+          alt="Neil"
         />
       </div>
       <div className="flex-1 min-w-0 text-left">
@@ -33,21 +33,14 @@ function TabList() {
       <ul className="flex flex-wrap text-2xl font-medium text-center text-gray-500 border-b-2 border-gray-200 dark:border-gray-600 dark:text-gray-400">
         <div className="flex justify-items-start">
           <li className="mr-2">
-            <a
-              href="#"
-              aria-current="page"
-              className="inline-block p-4 text-indigo-500 bg-gray-100 rounded-t-lg active border-b-4 dark:bg-gray-700 dark:text-white dark:border-indigo-500"
-            >
+            <p className="inline-block p-4 text-indigo-500 bg-gray-100 rounded-t-lg active border-b-4 dark:bg-gray-700 dark:text-white dark:border-indigo-500">
               Trending
-            </a>
+            </p>
           </li>
           <li className="mr-2">
-            <a
-              href="#"
-              className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-            >
+            <p className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">
               Top
-            </a>
+            </p>
           </li>
         </div>
 
