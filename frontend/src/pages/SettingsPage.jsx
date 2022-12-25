@@ -134,7 +134,7 @@ function NotificationsSettings() {
       <ul>
         {LIST_ITEMS.map((item) => (
           <div className="border-2 rounded-xl border-gray-500 m-5">
-            <div className="flex items-center space-x-6 p-10">
+            <div className="flex items-center space-x-6 p-8">
               <div className="flex-shrink-0">
                 <input
                   id="default-checkbox"
@@ -204,10 +204,10 @@ function SettingsPage() {
               <div
                 onClick={() => changeTab(tab)}
                 className={
-                  "inline-block p-4 cursor-pointer text-indigo-500 rounded-t-lg active dark:text-white  " +
+                  "inline-block p-4 cursor-pointer text-indigo-500 rounded-t-lg active dark:text-white " +
                   (activeTab === tab
                     ? "bg-gray-100 dark:bg-gray-700 border-b-4 border-indigo-500"
-                    : "")
+                    : "hover:bg-gray-100 dark:hover:bg-gray-700")
                 }
               >
                 {tab}
