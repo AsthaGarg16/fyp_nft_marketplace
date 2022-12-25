@@ -1,37 +1,36 @@
 import React from "react";
 import Carousel from "react-grid-carousel";
-import CollectionCard from "./CollectionCard";
+import Card from "./Card";
 
-function Gallery() {
+function CardGallery() {
   return (
     <Carousel cols={5} rows={1} gap={10} loop>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
       <Carousel.Item>
-        <CollectionCard />
+        <Card />
       </Carousel.Item>
-      {/* ... */}
     </Carousel>
   );
 }
 
-export default Gallery;
+export default CardGallery;

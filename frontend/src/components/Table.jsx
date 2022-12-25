@@ -1,6 +1,8 @@
 import React from "react";
+import { useState } from "react";
 
-function Table() {
+function Table(props) {
+  const [items, setItems] = useState(props.tableContent);
   return (
     <div className="overflow-x-auto w-6/12 relative shadow-md sm:rounded-lg">
       <div className="flex justify-between items-center pb-4"></div>
@@ -8,144 +10,40 @@ function Table() {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="py-3 px-6">
-              Product name
+              Collection
             </th>
-            <th scope="col" className="py-3 px-6">
-              Color
+            <th scope="col" className="py-3 px-6 text-right">
+              Floor Price
             </th>
-            <th scope="col" className="py-3 px-6">
-              Category
-            </th>
-            <th scope="col" className="py-3 px-6">
-              Price
-            </th>
-            <th scope="col" className="py-3 px-6">
-              Action
+            <th scope="col" className="py-3 px-6 text-right">
+              Volume
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              <div className="flex items-center space-x-4">
-                <img
-                  className="w-16 h-16 object-cover rounded-full shadow-lg "
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="Bonnie image"
-                />
-                <span className="text-xl">Apple MacBook Pro 17"</span>
-              </div>
-            </th>
-            <td className="py-4 px-6">Sliver</td>
-            <td className="py-4 px-6">Laptop</td>
-            <td className="py-4 px-6">$2999</td>
-            <td className="py-4 px-6">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          {items.map((item) => (
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <th
+                scope="row"
+                className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-gray-200"
               >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Microsoft Surface Pro
-            </th>
-            <td className="py-4 px-6">White</td>
-            <td className="py-4 px-6">Laptop PC</td>
-            <td className="py-4 px-6">$1999</td>
-            <td className="py-4 px-6">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Magic Mouse 2
-            </th>
-            <td className="py-4 px-6">Black</td>
-            <td className="py-4 px-6">Accessories</td>
-            <td className="py-4 px-6">$99</td>
-            <td className="py-4 px-6">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Apple Watch
-            </th>
-            <td className="py-4 px-6">Silver</td>
-            <td className="py-4 px-6">Accessories</td>
-            <td className="py-4 px-6">$179</td>
-            <td className="py-4 px-6">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              iPad
-            </th>
-            <td className="py-4 px-6">Gold</td>
-            <td className="py-4 px-6">Tablet</td>
-            <td className="py-4 px-6">$699</td>
-            <td className="py-4 px-6">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Apple iMac 27"
-            </th>
-            <td className="py-4 px-6">Silver</td>
-            <td className="py-4 px-6">PC Desktop</td>
-            <td className="py-4 px-6">$3999</td>
-            <td className="py-4 px-6">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
+                <div className="flex items-center space-x-4">
+                  <img
+                    className="w-16 h-16 object-cover rounded-lg shadow-lg "
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="Profile"
+                  />
+                  <span className="text-xl">{item.CollectionName}</span>
+                </div>
+              </th>
+              <td className="py-4 px-6 text-xl text-gray-800 text-right dark:text-gray-300">
+                {item.FloorPrice}
+              </td>
+              <td className="py-4 px-6 text-xl text-gray-800 text-right dark:text-gray-300">
+                {item.Volume}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
