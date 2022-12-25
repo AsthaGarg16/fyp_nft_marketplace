@@ -29,6 +29,38 @@ import Table from "./Table";
 // }
 
 function TabList(props) {
+  const table = [
+    {
+      CollectionImage: "",
+      CollectionName: "Name of collection",
+      FloorPrice: "$299",
+      Volume: "2000",
+    },
+    {
+      CollectionImage: "",
+      CollectionName: "Name of collection",
+      FloorPrice: "$299",
+      Volume: "2000",
+    },
+    {
+      CollectionImage: "",
+      CollectionName: "Name of collection",
+      FloorPrice: "$299",
+      Volume: "2000",
+    },
+    {
+      CollectionImage: "",
+      CollectionName: "Name of collection",
+      FloorPrice: "$299",
+      Volume: "2000",
+    },
+    {
+      CollectionImage: "",
+      CollectionName: "Name of collection",
+      FloorPrice: "$299",
+      Volume: "2000",
+    },
+  ];
   useEffect(() => {}, [props.table]);
 
   return (
@@ -51,8 +83,9 @@ function TabList(props) {
           <Dropdown />
         </div>
       </ul>
-      <div>
-        <Table tableContent={props.table} />
+      <div className="inline-flex">
+        <Table tableContent={table} />
+        <Table tableContent={table} />
       </div>
     </div>
   );

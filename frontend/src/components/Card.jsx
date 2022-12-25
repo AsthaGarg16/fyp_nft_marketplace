@@ -13,7 +13,7 @@ function Card() {
         <img
           src={require("../assets/nft.jpg")}
           alt="nft"
-          className="object-fill w-[24rem] h-[28rem]"
+          className="object-cover w-[24rem] h-[28rem]"
         />
       </div>
       <div className="flex">

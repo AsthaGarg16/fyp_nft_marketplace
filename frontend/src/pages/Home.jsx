@@ -34,12 +34,17 @@ function Home() {
         </p>
         <Gallery />
       </div>
+      <div className="m-5">
+        <p className="mb-10 mx-5 text-black text-5xl font-bold dark:text-white text-left">
+          Explore collections by category
+        </p>
+      </div>
 
-      <div className="flex flex-wrap justify-center">
+      {/* <div className="flex flex-wrap justify-center">
         <Card />
         <DetailCard />
       </div>
-      <CollectionCard />
+      <CollectionCard /> */}
     </div>
   );
 }
