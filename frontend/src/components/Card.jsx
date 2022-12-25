@@ -17,10 +17,10 @@ function Card() {
         />
       </div>
       <div className="flex">
-        <p className="m-2 self-end z-50 text-white font-medium text-lg p-2.5 text-left">
+        <p className="m-2 self-end z-50 text-white font-medium text-xl p-2.5 text-left">
           Name of collection
         </p>
-        <p className="m-2 self-end justify-self-end z-50 text-white text-lg p-2.5 text-right">
+        <p className="m-2 self-end justify-self-end z-50 text-white text-xl p-2.5 text-right">
           0.2 ETH
         </p>
       </div>
