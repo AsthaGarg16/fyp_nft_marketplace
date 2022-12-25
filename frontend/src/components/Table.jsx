@@ -3,6 +3,9 @@ import { useState } from "react";
 
 function Table(props) {
   const [items, setItems] = useState(props.tableContent);
+  function GoToCollection(collectionName) {
+    //go to collection
+  }
   return (
     <div className="overflow-x-auto w-6/12 relative shadow-md sm:rounded-lg">
       <div className="flex justify-between items-center pb-4"></div>
@@ -22,7 +25,10 @@ function Table(props) {
         </thead>
         <tbody>
           {items.map((item) => (
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+            <tr
+              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 hover:cursor-pointer dark:hover:bg-gray-700"
+              onClick={() => GoToCollection}
+            >
               <th
                 scope="row"
                 className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-gray-200"

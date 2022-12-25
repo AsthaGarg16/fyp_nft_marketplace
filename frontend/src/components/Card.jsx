@@ -1,8 +1,14 @@
 import React from "react";
 
 function Card() {
+  function GoToCollection(collectionName) {
+    //go to collection
+  }
   return (
-    <div className="card-zoom">
+    <div
+      className="card-zoom hover:cursor-pointer"
+      onClick={() => GoToCollection}
+    >
       <div className="card-zoom-image">
         <img
           src={require("../assets/nft.jpg")}
@@ -11,11 +17,11 @@ function Card() {
         />
       </div>
       <div className="flex">
-        <p className="absolute bottom-2 right-50 z-50 text-white font-medium text-md p-2.5 text-left">
+        <p className="m-2 self-end z-50 text-white font-medium text-lg p-2.5 text-left">
           Name of collection
         </p>
-        <p className="absolute bottom-2 right-2 z-50 text-white text-md p-2.5 text-left">
-          Floor price: 0.2 ETH
+        <p className="m-2 self-end justify-self-end z-50 text-white text-lg p-2.5 text-right">
+          0.2 ETH
         </p>
       </div>
     </div>
