@@ -1,13 +1,17 @@
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 function Card() {
+  const navigate = useNavigate();
   function GoToCollection(collectionName) {
     //go to collection
+    navigate("/collection");
   }
   return (
     <div
       className="card-zoom hover:cursor-pointer"
-      onClick={() => GoToCollection}
+      onClick={() => GoToCollection("collection")}
     >
       <div className="card-zoom-image">
         <img

@@ -1,13 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function CollectionCard() {
+  const navigate = useNavigate();
   function GoToCollection(collectionName) {
     //go to collection
+    navigate("/collection");
   }
   return (
     <div
       className="w-96 h-72 bg-white rounded-xl shadow-lg dark:bg-gray-700 hover:cursor-pointer"
-      onClick={() => GoToCollection}
+      onClick={() => GoToCollection("collection")}
     >
       <div className="overflow-hidden ">
         <img

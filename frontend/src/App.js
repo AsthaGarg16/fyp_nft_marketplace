@@ -7,6 +7,7 @@ import SettingsPage from "./pages/SettingsPage";
 import ExplorePage from "./pages/ExplorePage";
 import StatPage from "./pages/StatPage";
 import CreatePage from "./pages/CreatePage";
+import CollectionPage from "./pages/CollectionPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/stat" element={<StatPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/collection" element={<CollectionPage />} />
           </Routes>
         </div>
       </BrowserRouter>
