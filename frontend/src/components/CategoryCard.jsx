@@ -6,7 +6,7 @@ function CategoryCard(props) {
   }
   return (
     <div
-      className="w-[28rem] h-96 bg-white rounded-xl shadow-lg dark:bg-gray-700 hover:cursor-pointer"
+      className="w-[28rem] h-96 mb-5 bg-white rounded-xl shadow-lg dark:bg-gray-700 hover:cursor-pointer"
       onClick={() => GoToCollection}
     >
       <div className="overflow-hidden ">
