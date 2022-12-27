@@ -29,15 +29,14 @@ function Dropdown() {
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <p
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-lg"
                   )}
                 >
                   24h
-                </a>
+                </p>
               )}
             </Menu.Item>
             <Menu.Item>
