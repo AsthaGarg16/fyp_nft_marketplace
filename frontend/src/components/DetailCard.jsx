@@ -1,19 +1,24 @@
 import React from "react";
 import AnimatedImage from "./AnimatedImage";
-import Card from "./Card";
 
 function DetailCard() {
   return (
     <div className="card-custom w-full max-w-xs bg-white rounded-xl shadow-md dark:bg-gray-700">
       <div className="flex justify-center">
         <div className="card-zoom">
-          <AnimatedImage />
+          <div className="card-zoom-image">
+            <img
+              src={require("../assets/nft.jpg")}
+              alt="nft"
+              className="object-cover h-72 w-96"
+            />
+          </div>
         </div>
       </div>
 
       <div className="px-5 pb-5">
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+          Apple Watch Series 7 GPS
         </h5>
 
         <div className="flex items-center mt-2.5 mb-2.5"></div>

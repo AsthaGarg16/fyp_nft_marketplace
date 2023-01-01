@@ -8,6 +8,7 @@ import ExplorePage from "./pages/ExplorePage";
 import StatPage from "./pages/StatPage";
 import CreatePage from "./pages/CreatePage";
 import CollectionPage from "./pages/CollectionPage";
+import ItemPage from "./pages/ItemPage";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Navbar />
         <div>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<ItemPage />} />
             <Route path="/explore" element={<ExplorePage />} />
             <Route path="/create" element={<CreatePage />} />
             <Route path="/stat" element={<StatPage />} />
