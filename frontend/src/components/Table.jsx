@@ -1,10 +1,13 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Table(props) {
+  const navigate = useNavigate();
   const [items, setItems] = useState(props.tableContent);
   function GoToCollection(collectionName) {
     //go to collection
+    navigate("/collection");
   }
   return (
     <div className="overflow-x-auto w-6/12 m-2 relative shadow-md sm:rounded-lg">
@@ -27,7 +30,7 @@ function Table(props) {
           {items.map((item) => (
             <tr
               className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 hover:cursor-pointer dark:hover:bg-gray-700"
-              onClick={() => GoToCollection}
+              onClick={() => GoToCollection()}
             >
               <th
                 scope="row"

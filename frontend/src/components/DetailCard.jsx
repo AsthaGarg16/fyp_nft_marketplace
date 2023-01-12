@@ -1,16 +1,15 @@
 import React from "react";
-import AnimatedImage from "./AnimatedImage";
 
 function DetailCard() {
   return (
-    <div className="card-custom w-full max-w-xs bg-white rounded-xl shadow-md dark:bg-gray-700">
+    <div className="card-custom w-full h-96 max-w-xs bg-white rounded-xl mb-5 shadow-md dark:bg-gray-700">
       <div className="flex justify-center">
-        <div className="card-zoom">
+        <div className="card-zoom2">
           <div className="card-zoom-image">
             <img
               src={require("../assets/nft.jpg")}
               alt="nft"
-              className="object-cover h-72 w-96"
+              className="object-cover h-64 w-96"
             />
           </div>
         </div>

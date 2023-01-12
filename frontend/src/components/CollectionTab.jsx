@@ -258,7 +258,7 @@ function CollectionTab(props) {
 
         {/* Product grid */}
         <div className="lg:col-span-3">
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-4 lg:grid-cols-3">
             {items.map((item) => (
               <DetailCard />
             ))}
