@@ -210,13 +210,13 @@ function CollectionTab(props) {
             <Disclosure
               as="div"
               key={section.id}
-              className="border-b border-gray-200 py-6"
+              className="border-b border-gray-200 py-6 dark:bg-gray-800 dark:text-gray-200"
             >
               {({ open }) => (
                 <>
                   <h3 className="-my-3 flow-root">
-                    <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                      <span className="font-medium text-gray-900">
+                    <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-xl text-gray-400 hover:text-gray-500 dark:bg-gray-800">
+                      <span className="font-medium text-gray-900 dark:text-gray-200">
                         {section.name}
                       </span>
                       <span className="ml-6 flex items-center">
@@ -242,7 +242,7 @@ function CollectionTab(props) {
                           />
                           <label
                             htmlFor={`filter-${section.id}-${optionIdx}`}
-                            className="ml-3 text-sm text-gray-600"
+                            className="ml-3 text-lg text-gray-600 dark:text-gray-400"
                           >
                             {option.label}
                           </label>

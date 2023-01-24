@@ -1,65 +1,69 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-error PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
-error ItemNotForSale(address nftAddress, uint256 tokenId);
-error NotListed(address nftAddress, uint256 tokenId);
-error AlreadyListed(address nftAddress, uint256 tokenId);
-error NoProceeds();
-error NotOwner();
-error NotApprovedForMarketplace();
-error PriceMustBeAboveZero();
-error NotEnoughQuantityHeld();
+// error PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
+// error ItemNotForSale(address nftAddress, uint256 tokenId);
+// error NotListed(address nftAddress, uint256 tokenId);
+// error AlreadyListed(address nftAddress, uint256 tokenId);
+// error NoProceeds();
+// error NotOwner();
+// error NotApprovedForMarketplace();
+// error PriceMustBeAboveZero();
+// error NotEnoughQuantityHeld();
 
-// Error thrown for isNotOwner modifier
-// error IsNotOwner()
+// // Error thrown for isNotOwner modifier
+// // error IsNotOwner()
 
-contract NftMarketplace is ReentrancyGuard {
+contract NftMarketplace is Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
     /// @notice Events for the contract
     event ItemListed(
         address indexed seller,
         address indexed nftAddress,
         uint256 indexed tokenId,
+        address payToken,
         uint256 quantity,
-        uint256 price,
+        uint256 pricePerItem,
         uint256 startingTime
     );
 
-    event ItemCanceled(address indexed seller, address indexed nftAddress, uint256 indexed tokenId);
-
-    event ItemBought(
-        address indexed buyer,
-        address indexed nftAddress,
-        uint256 indexed tokenId,
-        uint256 price,
-        uint256 quantity
-    );
-
-    event ItemUpdated(
+    event ItemSold(
         address indexed seller,
-        address indexed nftAddress,
-        uint256 indexed tokenId,
+        address indexed buyer,
+        address indexed nft,
+        uint256 tokenId,
+        uint256 quantity,
+        address payToken,
+        uint256 pricePerItem
+    );
+    event ItemUpdated(
+        address indexed owner,
+        address indexed nft,
+        uint256 tokenId,
+        address payToken,
         uint256 newPrice
     );
 
+    event ItemCanceled(address indexed owner, address indexed nft, uint256 tokenId);
+
     event OfferCreated(
-        address indexed seller,
-        address indexed nftAddress,
-        uint256 indexed tokenId,
+        address indexed creator,
+        address indexed nft,
+        uint256 tokenId,
         uint256 quantity,
-        uint256 price,
+        address payToken,
+        uint256 pricePerItem,
         uint256 deadline
     );
-    event OfferCanceled(
-        address indexed seller,
-        address indexed nftAddress,
-        uint256 indexed tokenId
-    );
+    event OfferCanceled(address indexed creator, address indexed nft, uint256 tokenId);
 
     event UpdatePlatformFee(uint16 platformFee);
     event UpdatePlatformFeeRecipient(address payable platformFeeRecipient);
@@ -67,12 +71,14 @@ contract NftMarketplace is ReentrancyGuard {
     /// @notice Structure for listed items
     struct Listing {
         uint256 quantity;
-        uint256 price;
+        address payToken;
+        uint256 pricePerItem;
         uint256 startingTime;
     }
 
     /// @notice Structure for offer
     struct Offer {
+        IERC20 payToken;
         uint256 quantity;
         uint256 pricePerItem;
         uint256 deadline;
@@ -140,26 +146,15 @@ contract NftMarketplace is ReentrancyGuard {
     ) {
         Listing memory listedItem = listings[_nftAddress][_tokenId][_owner];
 
-        IERC721 nft = IERC721(_nftAddress);
-        address owner = nft.ownerOf(_tokenId);
-        if (_owner != owner) {
-            revert NotOwner();
-        }
+        _validOwner(_nftAddress, _tokenId, _owner, listedItem.quantity);
+
+        // IERC721 nft = IERC721(_nftAddress);
+        // address owner = nft.ownerOf(_tokenId);
+        // if (_owner != owner) {
+        //     revert NotOwner();
+        // }
 
         require(_getNow() >= listedItem.startingTime, "item not buyable");
-        _;
-    }
-
-    modifier isOwner(
-        address nftAddress,
-        uint256 tokenId,
-        address spender
-    ) {
-        IERC721 nft = IERC721(nftAddress);
-        address owner = nft.ownerOf(tokenId);
-        if (spender != owner) {
-            revert NotOwner();
-        }
         _;
     }
 
@@ -186,6 +181,8 @@ contract NftMarketplace is ReentrancyGuard {
     constructor(address payable _feeRecipient, uint16 _platformFee) {
         platformFee = _platformFee;
         feeReceipient = _feeRecipient;
+        // __Ownable_init();
+        // __ReentrancyGuard_init();
     }
 
     ////////////////////
@@ -195,32 +192,44 @@ contract NftMarketplace is ReentrancyGuard {
      @notice Method for listing NFT
      @param _nftAddress Address of NFT contract
      @param _tokenId Token ID of NFT
-     @param _price sale price for each item
+     @param _pricePerItem sale price for each item
      @param _startingTime scheduling for a future sale
      */
     function listItem(
         address _nftAddress,
         uint256 _tokenId,
         uint256 _quantity,
-        uint256 _price,
+        address _payToken,
+        uint256 _pricePerItem,
         uint256 _startingTime
-    )
-        external
-        notListed(_nftAddress, _tokenId, msg.sender)
-        isOwner(_nftAddress, _tokenId, msg.sender)
-    {
-        if (_price <= 0) {
-            revert PriceMustBeAboveZero();
+    ) external notListed(_nftAddress, _tokenId, msg.sender) {
+        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721 nft = IERC721(_nftAddress);
+            require(nft.ownerOf(_tokenId) == _msgSender(), "not owning item");
+            require(nft.isApprovedForAll(_msgSender(), address(this)), "item not approved");
+        } else if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155)) {
+            IERC1155 nft = IERC1155(_nftAddress);
+            require(nft.balanceOf(_msgSender(), _tokenId) >= _quantity, "must hold enough nfts");
+            require(nft.isApprovedForAll(_msgSender(), address(this)), "item not approved");
+        } else {
+            revert("invalid nft address");
         }
-        IERC721 nft = IERC721(_nftAddress);
-        if (nft.getApproved(_tokenId) != address(this)) {
-            revert NotApprovedForMarketplace();
-        }
-        if (nft.balanceOf(msg.sender) < _quantity) {
-            revert NotEnoughQuantityHeld();
-        }
-        listings[_nftAddress][_tokenId][msg.sender] = Listing(_quantity, _price, _startingTime);
-        emit ItemListed(msg.sender, _nftAddress, _tokenId, _quantity, _price, _startingTime);
+
+        listings[_nftAddress][_tokenId][msg.sender] = Listing(
+            _quantity,
+            _payToken,
+            _pricePerItem,
+            _startingTime
+        );
+        emit ItemListed(
+            msg.sender,
+            _nftAddress,
+            _tokenId,
+            _payToken,
+            _quantity,
+            _pricePerItem,
+            _startingTime
+        );
     }
 
     /**
@@ -231,11 +240,7 @@ contract NftMarketplace is ReentrancyGuard {
     function cancelListing(
         address _nftAddress,
         uint256 _tokenId
-    )
-        external
-        isOwner(_nftAddress, _tokenId, msg.sender)
-        isListed(_nftAddress, _tokenId, msg.sender)
-    {
+    ) external isListed(_nftAddress, _tokenId, msg.sender) {
         // delete (listings[_nftAddress][_tokenId]);
         // emit ItemCanceled(msg.sender, _nftAddress, _tokenId);
         _deleteListing(_nftAddress, _tokenId, msg.sender);
@@ -253,13 +258,13 @@ contract NftMarketplace is ReentrancyGuard {
     function buyItem(
         address _nftAddress,
         uint256 _tokenId,
+        address _payToken,
         address _owner
     )
         external
         payable
         isListed(_nftAddress, _tokenId, _owner)
         validListing(_nftAddress, _tokenId, _owner)
-        // isNotOwner(nftAddress, tokenId, msg.sender)
         nonReentrant
     {
         // Listing memory listedItem = listings[_nftAddress][_tokenId][_owner];
@@ -270,24 +275,28 @@ contract NftMarketplace is ReentrancyGuard {
         // delete (listings[_nftAddress][_tokenId]);
         // IERC721(_nftAddress).safeTransferFrom(listedItem.seller, msg.sender, _tokenId);
         // emit ItemBought(msg.sender, _nftAddress, _tokenId, listedItem.price);
-        _buyItem(_nftAddress, _tokenId, _owner);
+        Listing memory listedItem = listings[_nftAddress][_tokenId][_owner];
+        require(listedItem.payToken == _payToken, "invalid pay token");
+        _buyItem(_nftAddress, _tokenId, _payToken, _owner);
     }
 
-    function _buyItem(address _nftAddress, uint256 _tokenId, address _owner) private {
+    function _buyItem(
+        address _nftAddress,
+        uint256 _tokenId,
+        address _payToken,
+        address _owner
+    ) private {
         Listing memory listedItem = listings[_nftAddress][_tokenId][_owner];
 
-        uint256 price = listedItem.price * (listedItem.quantity);
+        uint256 price = listedItem.pricePerItem * (listedItem.quantity);
         uint256 feeAmount = (price * (platformFee)) / (1e3);
-        payable(feeReceipient).transfer(feeAmount);
-
-        // IERC20(_payToken).safeTransferFrom(msg.sender, feeReceipient, feeAmount);
+        IERC20(_payToken).safeTransferFrom(msg.sender, feeReceipient, feeAmount);
 
         address minter = minters[_nftAddress][_tokenId];
         uint16 royalty = royalties[_nftAddress][_tokenId];
         if (minter != address(0) && royalty != 0) {
             uint256 royaltyFee = ((price - feeAmount) * (royalty)) / (10000);
-            payable(minter).transfer(royaltyFee);
-            //IERC20(_payToken).safeTransferFrom(msg.sender, minter, royaltyFee);
+            IERC20(_payToken).safeTransferFrom(msg.sender, minter, royaltyFee);
 
             feeAmount = feeAmount + (royaltyFee);
         } else {
@@ -295,40 +304,32 @@ contract NftMarketplace is ReentrancyGuard {
             royalty = collectionRoyalties[_nftAddress].royalty;
             if (minter != address(0) && royalty != 0) {
                 uint256 royaltyFee = ((price - feeAmount) * (royalty)) / (10000);
-                payable(minter).transfer(royaltyFee);
-                //IERC20(_payToken).safeTransferFrom(msg.sender, minter, royaltyFee);
-
+                IERC20(_payToken).safeTransferFrom(msg.sender, minter, royaltyFee);
                 feeAmount = feeAmount + (royaltyFee);
             }
         }
-        payable(_owner).transfer(price - (feeAmount));
-        //IERC20(_payToken).safeTransferFrom(msg.sender, _owner, price.sub(feeAmount));
-
+        IERC20(_payToken).safeTransferFrom(msg.sender, _owner, price - feeAmount);
         // Transfer NFT to buyer
-        //address = INTERFACE_ID_ERC721
-        if (IERC165(_nftAddress).supportsInterface("")) {
+        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
             IERC721(_nftAddress).safeTransferFrom(_owner, msg.sender, _tokenId);
         } else {
-            // IERC1155(_nftAddress).safeTransferFrom(
-            //     _owner,
-            //     msg.sender,
-            //     _tokenId,
-            //     listedItem.quantity,
-            //     bytes("")
-            // );
+            IERC1155(_nftAddress).safeTransferFrom(
+                _owner,
+                msg.sender,
+                _tokenId,
+                listedItem.quantity,
+                bytes("")
+            );
         }
-        // IFantomBundleMarketplace(addressRegistry.bundleMarketplace()).validateItemSold(
-        //     _nftAddress,
-        //     _tokenId,
-        //     listedItem.quantity
-        // );
 
-        emit ItemBought(
+        emit ItemSold(
+            _owner,
             msg.sender,
             _nftAddress,
             _tokenId,
-            price / (listedItem.quantity),
-            listedItem.quantity
+            listedItem.quantity,
+            _payToken,
+            price / listedItem.quantity
         );
         delete (listings[_nftAddress][_tokenId][_owner]);
     }
@@ -342,18 +343,20 @@ contract NftMarketplace is ReentrancyGuard {
     function updateListing(
         address _nftAddress,
         uint256 _tokenId,
+        address _payToken,
         uint256 _newPrice
-    )
-        external
-        isListed(_nftAddress, _tokenId, msg.sender)
-        nonReentrant
-        isOwner(_nftAddress, _tokenId, msg.sender)
-    {
-        if (_newPrice <= 0) {
-            revert PriceMustBeAboveZero();
-        }
-        listings[_nftAddress][_tokenId][msg.sender].price = _newPrice;
-        emit ItemUpdated(msg.sender, _nftAddress, _tokenId, _newPrice);
+    ) external isListed(_nftAddress, _tokenId, msg.sender) nonReentrant {
+        _validOwner(
+            _nftAddress,
+            _tokenId,
+            msg.sender,
+            listings[_nftAddress][_tokenId][msg.sender].quantity
+        );
+
+        //_validPayToken(_payToken);
+        listings[_nftAddress][_tokenId][msg.sender].pricePerItem = _newPrice;
+        listings[_nftAddress][_tokenId][msg.sender].payToken = _payToken;
+        emit ItemUpdated(msg.sender, _nftAddress, _tokenId, _payToken, _newPrice);
     }
 
     /** 
@@ -367,16 +370,17 @@ contract NftMarketplace is ReentrancyGuard {
     function createOffer(
         address _nftAddress,
         uint256 _tokenId,
+        IERC20 _payToken,
         uint256 _quantity,
         uint256 _price,
         uint256 _deadline
     ) external offerNotExists(_nftAddress, _tokenId, msg.sender) {
-        // require(
-        //     IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721) ||
-        //         IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155),
-        //     "invalid nft address"
-        // );
-
+        require(
+            IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721) ||
+                IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155),
+            "invalid nft address"
+        );
+        //FIX auction part
         // IFantomAuction auction = IFantomAuction(addressRegistry.auction());
 
         // (, , , uint256 startTime, , bool resulted) = auction.auctions(_nftAddress, _tokenId);
@@ -385,9 +389,17 @@ contract NftMarketplace is ReentrancyGuard {
 
         // require(_deadline > _getNow(), "invalid expiration");
 
-        offers[_nftAddress][_tokenId][msg.sender] = Offer(_quantity, _price, _deadline);
+        offers[_nftAddress][_tokenId][msg.sender] = Offer(_payToken, _quantity, _price, _deadline);
 
-        emit OfferCreated(msg.sender, _nftAddress, _tokenId, _quantity, _price, _deadline);
+        emit OfferCreated(
+            msg.sender,
+            _nftAddress,
+            _tokenId,
+            _quantity,
+            address(_payToken),
+            _price,
+            _deadline
+        );
     }
 
     /// @notice Method for canceling the offer
@@ -409,29 +421,21 @@ contract NftMarketplace is ReentrancyGuard {
         address _nftAddress,
         uint256 _tokenId,
         address _creator
-    )
-        external
-        nonReentrant
-        offerExists(_nftAddress, _tokenId, _creator)
-        isOwner(_nftAddress, _tokenId, msg.sender)
-    {
+    ) external nonReentrant offerExists(_nftAddress, _tokenId, _creator) {
         Offer memory offer = offers[_nftAddress][_tokenId][_creator];
-
+        _validOwner(_nftAddress, _tokenId, msg.sender, offer.quantity);
         uint256 price = offer.pricePerItem * (offer.quantity);
         uint256 feeAmount = (price * (platformFee)) / (1e3);
         uint256 royaltyFee;
-        //Fix
-        //payable(this).transfer(_creator, feeAmount);
-        payable(feeReceipient).transfer(feeAmount);
+        offer.payToken.safeTransferFrom(_creator, feeReceipient, feeAmount);
 
         address minter = minters[_nftAddress][_tokenId];
         uint16 royalty = royalties[_nftAddress][_tokenId];
 
         if (minter != address(0) && royalty != 0) {
             royaltyFee = ((price - feeAmount) * (royalty)) / (10000);
-            //Fix
-            //payable(this).transfer(_creator, royaltyFee);
-            payable(minter).transfer(royaltyFee);
+            offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+            // payable(minter).transfer(royaltyFee);
             feeAmount = feeAmount + (royaltyFee);
         } else {
             minter = collectionRoyalties[_nftAddress].feeRecipient;
@@ -468,7 +472,7 @@ contract NftMarketplace is ReentrancyGuard {
         //     offer.quantity
         // );
 
-        emit ItemBought(
+        emit ItemSold(
             msg.sender,
             _creator,
             _nftAddress,
@@ -506,7 +510,7 @@ contract NftMarketplace is ReentrancyGuard {
         address nftAddress,
         uint256 tokenId
     ) external view returns (Listing memory) {
-        return Listing[nftAddress][tokenId];
+        return listings[nftAddress][tokenId][msg.sender];
     }
 
     function getProceeds(address seller) external view returns (uint256) {
@@ -521,15 +525,28 @@ contract NftMarketplace is ReentrancyGuard {
         return block.timestamp;
     }
 
-    function _deleteListing(
+    function _validOwner(
         address _nftAddress,
         uint256 _tokenId,
-        address _owner
-    ) private isOwner(_nftAddress, _tokenId, msg.sender) {
+        address _owner,
+        uint256 quantity
+    ) internal view {
+        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721 nft = IERC721(_nftAddress);
+            require(nft.ownerOf(_tokenId) == _owner, "not owning item");
+        } else if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155)) {
+            IERC1155 nft = IERC1155(_nftAddress);
+            require(nft.balanceOf(_owner, _tokenId) >= quantity, "not owning item");
+        } else {
+            revert("invalid nft address");
+        }
+    }
+
+    function _deleteListing(address _nftAddress, uint256 _tokenId, address _owner) private {
         Listing memory listedItem = listings[_nftAddress][_tokenId][_owner];
 
         // isOwner(_nftAddress, _tokenId, _owner, listedItem.quantity);
-
+        _validOwner(_nftAddress, _tokenId, _owner, listedItem.quantity);
         delete (listings[_nftAddress][_tokenId][_owner]);
         emit ItemCanceled(_owner, _nftAddress, _tokenId);
     }
