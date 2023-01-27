@@ -24,6 +24,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/collection" element={<CollectionPage />} />
+            <Route path="/item" element={<ItemPage />} />
           </Routes>
         </div>
       </BrowserRouter>

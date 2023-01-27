@@ -23,6 +23,8 @@ export default function Navbar() {
     { name: "Profile", href: "/profile" },
     { name: "My collections", href: "/my-collections" },
     { name: "Settings", href: "/settings" },
+    { name: "Favourties", href: "/my-favourited" },
+    { name: "Watchlist", href: "/my-watchlist" },
     { name: "Log out", href: "#" },
   ];
 

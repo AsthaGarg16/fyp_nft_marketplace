@@ -1,8 +1,16 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 function DetailCard() {
+  const navigate = useNavigate();
+  function GoToItem(address) {
+    //go to collection
+    navigate("/item");
+  }
   return (
-    <div className="card-custom w-full h-96 max-w-xs bg-white rounded-xl mb-5 shadow-md dark:bg-gray-700">
+    <div
+      className="card-custom w-full h-96 max-w-xs bg-white rounded-xl mb-5 shadow-md dark:bg-gray-700 hover:cursor-pointer"
+      onClick={() => GoToItem("nft-address")}
+    >
       <div className="flex justify-center">
         <div className="card-zoom2">
           <div className="card-zoom-image">
