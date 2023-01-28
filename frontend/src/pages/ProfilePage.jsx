@@ -1,7 +1,21 @@
-import React from "react";
-import TabList from "../components/TabList";
+import { React, useState } from "react";
 
 function ProfilePage() {
+  const tabs = [
+    "Collected",
+    "Created",
+    "Liked",
+    "Offers Made",
+    "Offers Received",
+  ];
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+
+  function changeTab(tabName) {
+    if (activeTab === tabName) {
+    } else {
+      setActiveTab(tabName);
+    }
+  }
   return (
     <div>
       <div>
@@ -46,7 +60,25 @@ function ProfilePage() {
           </div>
         </div>
         <div className="m-5">
-          <TabList />
+          <ul className="flex flex-wrap text-2xl font-medium text-center text-gray-500 border-b-2 border-gray-200 dark:border-gray-600 dark:text-gray-400">
+            <div className="flex justify-items-start">
+              {tabs.map((tab) => (
+                <li className="mr-2">
+                  <div
+                    onClick={() => changeTab(tab)}
+                    className={
+                      "inline-block p-4 cursor-pointer text-indigo-500 rounded-t-lg active dark:text-white " +
+                      (activeTab === tab
+                        ? "bg-gray-100 dark:bg-gray-700 border-b-4 border-indigo-500"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-700")
+                    }
+                  >
+                    {tab}
+                  </div>
+                </li>
+              ))}
+            </div>
+          </ul>
         </div>
       </div>
     </div>
