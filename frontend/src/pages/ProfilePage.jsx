@@ -1,4 +1,59 @@
 import { React, useState } from "react";
+import DetailCard from "../components/DetailCard";
+import ItemTable from "../components/ItemTable";
+
+function CardsTab() {
+  var items = [];
+  for (var i = 0; i < 15; i++) {
+    items.push(i);
+  }
+  return (
+    <div className="lg:col-span-3">
+      <div className="grid grid-cols-4 lg:grid-cols-3">
+        {items.map((item) => (
+          <DetailCard />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ListTab() {
+  const table = [
+    {
+      ItemImage: "",
+      ItemName: "Name of Item",
+      OfferPrice: "$299",
+      Time: "2000",
+    },
+    {
+      ItemImage: "",
+      ItemName: "Name of Item",
+      OfferPrice: "$299",
+      Time: "2000",
+    },
+    {
+      ItemImage: "",
+      ItemName: "Name of Item",
+      OfferPrice: "$299",
+      Time: "2000",
+    },
+    {
+      ItemImage: "",
+      ItemName: "Name of Item",
+      OfferPrice: "$299",
+      Time: "2000",
+    },
+    {
+      ItemImage: "",
+      ItemName: "Name of Item",
+      OfferPrice: "$299",
+      Time: "2000",
+    },
+  ];
+
+  return <ItemTable tableContent={table} />;
+}
 
 function ProfilePage() {
   const tabs = [
@@ -79,6 +134,13 @@ function ProfilePage() {
               ))}
             </div>
           </ul>
+          {activeTab === "Collected" ||
+          activeTab === "Created" ||
+          activeTab === "Liked" ? (
+            <CardsTab />
+          ) : (
+            <ListTab />
+          )}
         </div>
       </div>
     </div>

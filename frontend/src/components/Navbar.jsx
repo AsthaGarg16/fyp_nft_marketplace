@@ -96,14 +96,14 @@ export default function Navbar() {
               <div className="absolute right-0 flex flex-none items-center pr-2">
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-10 w-10 stroke-2" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
                 >
                   <span className="sr-only">View cart</span>
                   <ShoppingCartIcon
@@ -113,7 +113,7 @@ export default function Navbar() {
                 </button>
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
                 >
                   <span className="sr-only">Connect Wallet</span>
                   <WalletIcon
