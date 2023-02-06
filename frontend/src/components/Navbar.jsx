@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import CartModal from "../pages/CartModal";
+import WalletModal from "../pages/WalletModal";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -15,6 +16,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [showCart, setShowCart] = useState(false);
+  const [showWallet, setShowWallet] = useState(false);
   const navigate = useNavigate();
   const navigation = [
     { name: "Explore", href: "/", current: false },
@@ -57,11 +59,21 @@ export default function Navbar() {
   const closeCart = () => {
     setShowCart(false);
   };
+
+  function showWalletModal() {
+    setShowWallet(true);
+    console.log(showCart);
+  }
+
+  const closeWallet = () => {
+    setShowWallet(false);
+  };
   return (
     <Disclosure as="nav" className="bg-gray-900">
       {({ open }) => (
         <>
           <CartModal handleClose={closeCart} show={showCart} />
+          <WalletModal handleClose={closeWallet} show={showWallet} />
           <div className="mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -127,6 +139,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
+                  onClick={() => showWalletModal()}
                 >
                   <span className="sr-only">Connect Wallet</span>
                   <WalletIcon
