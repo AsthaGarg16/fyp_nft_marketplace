@@ -6,12 +6,10 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
-interface IMarketAddressRegistry {
+interface IAddressRegistry {
     function marketplace() external view returns (address);
 
-    function bundleMarketplace() external view returns (address);
-
-    // function tokenRegistry() external view returns (address);
+    function tokenRegistry() external view returns (address);
 }
 
 interface IMarketplace {
@@ -139,11 +137,7 @@ contract MarketAuction is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     modifier onlyMarketplace() {
-        require(
-            addressRegistry.marketplace() == msg.sender ||
-                addressRegistry.bundleMarketplace() == msg.sender,
-            "not marketplace contract"
-        );
+        require(addressRegistry.marketplace() == msg.sender, "not marketplace contract");
         _;
     }
 
@@ -492,11 +486,11 @@ contract MarketAuction is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         //FIX
 
-        // IMarketplace(addressRegistry.bundleMarketplace()).validateItemSold(
-        //     _nftAddress,
-        //     _tokenId,
-        //     uint256(1)
-        // );
+        IMarketplace(addressRegistry.marketplace()).validateItemSold(
+            _nftAddress,
+            _tokenId,
+            uint256(1)
+        );
 
         emit AuctionResulted(
             _msgSender(),

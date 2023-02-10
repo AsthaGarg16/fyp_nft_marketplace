@@ -9,19 +9,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// error PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
-// error ItemNotForSale(address nftAddress, uint256 tokenId);
-// error NotListed(address nftAddress, uint256 tokenId);
-// error AlreadyListed(address nftAddress, uint256 tokenId);
-// error NoProceeds();
-// error NotOwner();
-// error NotApprovedForMarketplace();
-// error PriceMustBeAboveZero();
-// error NotEnoughQuantityHeld();
-
-// // Error thrown for isNotOwner modifier
-// // error IsNotOwner()
-
 contract NftMarketplace is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
     /// @notice Events for the contract
