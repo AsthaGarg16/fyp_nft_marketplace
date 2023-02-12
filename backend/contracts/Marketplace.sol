@@ -9,6 +9,21 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+interface IAddressRegistry {
+    function auction() external view returns (address);
+
+    //function marketplace() external view returns (address);
+
+    function tokenRegistry() external view returns (address);
+}
+
+interface IMarketAuction {
+    function auctions(
+        address,
+        uint256
+    ) external view returns (address, address, uint256, uint256, uint256, bool);
+}
+
 contract NftMarketplace is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
     /// @notice Events for the contract
@@ -103,6 +118,9 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
 
     /// @notice NftAddress -> Royalty
     mapping(address => CollectionRoyalty) public collectionRoyalties;
+
+    /// @notice Address registry
+    IAddressRegistry public addressRegistry;
 
     // mapping(address => uint256) private s_proceeds;
 
@@ -367,14 +385,14 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
                 IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155),
             "invalid nft address"
         );
-        //FIX auction part
-        // IFantomAuction auction = IFantomAuction(addressRegistry.auction());
 
-        // (, , , uint256 startTime, , bool resulted) = auction.auctions(_nftAddress, _tokenId);
+        IMarketAuction auction = IMarketAuction(addressRegistry.auction());
 
-        // require(startTime == 0 || resulted == true, "cannot place an offer if auction is going on");
+        (, , , uint256 startTime, , bool resulted) = auction.auctions(_nftAddress, _tokenId);
 
-        // require(_deadline > _getNow(), "invalid expiration");
+        require(startTime == 0 || resulted == true, "cannot place an offer if auction is going on");
+
+        require(_deadline > _getNow(), "invalid expiration");
 
         offers[_nftAddress][_tokenId][msg.sender] = Offer(_payToken, _quantity, _price, _deadline);
 
@@ -476,19 +494,6 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         delete (offers[_nftAddress][_tokenId][_creator]);
     }
 
-    /**
-     @notice Method for withdrawing proceeds from sales
-     */
-    function withdrawProceeds() external {
-        // uint256 proceeds = s_proceeds[msg.sender];
-        // if (proceeds <= 0) {
-        //     revert NoProceeds();
-        // }
-        // s_proceeds[msg.sender] = 0;
-        // (bool success, ) = payable(msg.sender).call{value: proceeds}("");
-        // require(success, "Transfer failed");
-    }
-
     //////////////////////
     // Getter Functions //
     //////////////////////
@@ -498,10 +503,6 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         uint256 tokenId
     ) external view returns (Listing memory) {
         return listings[nftAddress][tokenId][msg.sender];
-    }
-
-    function getProceeds(address seller) external view returns (uint256) {
-        // return s_proceeds[seller];
     }
 
     ////////////////////////////////////
