@@ -24,13 +24,18 @@ interface IMarketAuction {
     ) external view returns (address, address, uint256, uint256, uint256, bool);
 }
 
+interface ITokenRegistry {
+    function enabled(address) external view returns (bool);
+}
+
 contract NftMarketplace is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
+
     /// @notice Events for the contract
     event ItemListed(
         address indexed seller,
         address indexed nftAddress,
-        uint256 indexed tokenId,
+        uint256 tokenId,
         address payToken,
         uint256 quantity,
         uint256 pricePerItem,
@@ -219,6 +224,7 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         } else {
             revert("invalid nft address");
         }
+        // _validPayToken(_payToken);
 
         listings[_nftAddress][_tokenId][msg.sender] = Listing(
             _quantity,
@@ -450,32 +456,24 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
                 //Fix
                 //payable(this).transfer(_creator, royaltyFee);
                 payable(minter).transfer(royaltyFee);
-                //offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
+                offer.payToken.safeTransferFrom(_creator, minter, royaltyFee);
                 feeAmount = feeAmount + (royaltyFee);
             }
         }
-        //Fix
-        //offer.payToken.safeTransferFrom(_creator, msg.sender, price - (feeAmount));
+        offer.payToken.safeTransferFrom(_creator, msg.sender, price - (feeAmount));
 
         // Transfer NFT to buyer
-        //FIX
-        // if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-        //     IERC721(_nftAddress).safeTransferFrom(msg.sender, _creator, _tokenId);
-        // } else {
-        IERC1155(_nftAddress).safeTransferFrom(
-            msg.sender,
-            _creator,
-            _tokenId,
-            offer.quantity,
-            bytes("")
-        );
-        // }
-        //FIX
-        // IFantomBundleMarketplace(addressRegistry.bundleMarketplace()).validateItemSold(
-        //     _nftAddress,
-        //     _tokenId,
-        //     offer.quantity
-        // );
+        if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721(_nftAddress).safeTransferFrom(msg.sender, _creator, _tokenId);
+        } else {
+            IERC1155(_nftAddress).safeTransferFrom(
+                msg.sender,
+                _creator,
+                _tokenId,
+                offer.quantity,
+                bytes("")
+            );
+        }
 
         emit ItemSold(
             msg.sender,
@@ -528,6 +526,15 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         } else {
             revert("invalid nft address");
         }
+    }
+
+    function _validPayToken(address _payToken) internal {
+        require(
+            _payToken == address(0) ||
+                (addressRegistry.tokenRegistry() != address(0) &&
+                    ITokenRegistry(addressRegistry.tokenRegistry()).enabled(_payToken)),
+            "invalid pay token"
+        );
     }
 
     function _deleteListing(address _nftAddress, uint256 _tokenId, address _owner) private {
