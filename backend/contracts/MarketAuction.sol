@@ -129,7 +129,7 @@ contract MarketAuction is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     bool public isPaused;
 
     /// @notice Address registry
-    IMarketAddressRegistry public addressRegistry;
+    IAddressRegistry public addressRegistry;
 
     modifier whenNotPaused() {
         require(!isPaused, "contract paused");
@@ -486,11 +486,11 @@ contract MarketAuction is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         //FIX
 
-        IMarketplace(addressRegistry.marketplace()).validateItemSold(
-            _nftAddress,
-            _tokenId,
-            uint256(1)
-        );
+        // IMarketplace(addressRegistry.marketplace()).validateItemSold(
+        //     _nftAddress,
+        //     _tokenId,
+        //     uint256(1)
+        // );
 
         emit AuctionResulted(
             _msgSender(),

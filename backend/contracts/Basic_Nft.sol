@@ -2,36 +2,34 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract Basic_Nft is ERC721, ERC721URIStorage {
-    constructor() public {
-        // Set the name and symbol for the NFT
-        _mint(msg.sender, 1, "My NFT");
-        _mint(msg.sender, 2, "My NFT");
-        _mint(msg.sender, 3, "My NFT");
-        _mint(msg.sender, 4, "My NFT");
+contract Basic_Nft is ERC721 {
+    string public constant TOKEN_URI =
+        "ipfs://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json";
+    uint256 private s_tokenCounter;
+    mapping(uint256 => string) public id_to_assetURI;
+    mapping(uint256 => string) public id_to_metadataURI;
+
+    constructor() ERC721("MyNFT", "NFT") {
+        s_tokenCounter = 0;
     }
 
-    function mintNFT(string memory assetURI, string memory metaData) public {
-        uint256 newTokenId = _totalSupply() + 1;
-        _mint(msg.sender, newTokenId);
-        _setTokenURI(newTokenId, assetURI);
-        _setTokenMetadata(newTokenId, metaData);
+    function mintNft() public {
+        _safeMint(msg.sender, s_tokenCounter);
+        s_tokenCounter = s_tokenCounter + 1;
     }
 
-    function _setTokenMetadata(uint256 tokenId, string memory metaData) internal {
-        require(_tokenExists(tokenId), "Token does not exist");
-        // Store the metadata in the contract storage
-        tokenMetadata[tokenId] = metaData;
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        // require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+        return id_to_assetURI[tokenId];
     }
 
-    function _setTokenURI(uint256 tokenId, string memory assetURI) internal {
-        require(_tokenExists(tokenId), "Token does not exist");
-        // Store the URI in the contract storage
-        tokenURIs[tokenId] = assetURI;
+    function metadataURI(uint256 tokenId) public view returns (string memory) {
+        // require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+        return id_to_metadataURI[tokenId];
     }
 
-    mapping(uint256 => string) private tokenMetadata;
-    mapping(uint256 => string) private tokenURIs;
+    function getTokenCounter() public view returns (uint256) {
+        return s_tokenCounter;
+    }
 }
