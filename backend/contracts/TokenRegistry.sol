@@ -12,13 +12,16 @@ contract TokenRegistry is Ownable {
     /// @notice ERC20 Address -> Bool
     mapping(address => bool) public enabled;
 
+    mapping(string => address) public tokens;
+
     /**
   @notice Method for adding payment token
   @dev Only admin
   @param token ERC20 token address
   */
-    function add(address token) external onlyOwner {
+    function add(address token, string memory name) external onlyOwner {
         require(!enabled[token], "token already added");
+        tokens[name] = token;
         enabled[token] = true;
         emit TokenAdded(token);
     }
@@ -28,9 +31,10 @@ contract TokenRegistry is Ownable {
   @dev Only admin
   @param token ERC20 token address
   */
-    function remove(address token) external onlyOwner {
+    function remove(address token, string memory name) external onlyOwner {
         require(enabled[token], "token not exist");
         enabled[token] = false;
+        tokens[name] = address(0);
         emit TokenRemoved(token);
     }
 }

@@ -20,13 +20,24 @@ contract AddressRegistry is Ownable {
     /// @notice TokenRegistry contract
     address public tokenRegistry;
 
+    /// @notice Fractional NFT contract
+    address public fNft;
+
     /**
-     @notice Update artion contract
+     @notice Update basic_nft contract
      @dev Only admin
      */
     function updateBasicNft(address _nft) external onlyOwner {
         require(IERC165(_nft).supportsInterface(INTERFACE_ID_ERC721), "Not ERC721");
         basicNft = _nft;
+    }
+
+    /**
+     @notice Update fractional nft contract
+     @dev Only admin
+     */
+    function updateFractionalNFT(address _fnft) external onlyOwner {
+        fNft = _fnft;
     }
 
     /**
