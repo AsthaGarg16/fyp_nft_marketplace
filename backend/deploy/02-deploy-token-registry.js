@@ -18,11 +18,11 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         waitConfirmations: waitBlockConfirmations,
     })
 
-    // Verify the deployment
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        log("Verifying...")
-        await verify(tokenRegistry.address, arguments)
-    }
+    // // Verify the deployment
+    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    //     log("Verifying...")
+    //     await verify(tokenRegistry.address, arguments)
+    // }
     log("----------------------------------------------------")
 }
 

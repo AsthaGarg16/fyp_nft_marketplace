@@ -18,14 +18,15 @@ const networkConfigInfo = {
     },
 }
 
-export const developmentChains = ["hardhat", "localhost"]
-export const VERIFICATION_BLOCK_CONFIRMATIONS = 6
+const developmentChains = ["hardhat", "localhost"]
+const VERIFICATION_BLOCK_CONFIRMATIONS = 6
 const frontEndContractsFile = "../frontend/constants/contractAddresses.json"
-const frontEndAbiFile = "../frontend/constants/abi.json"
+const frontEndAbiFile = "../frontend/constants/"
 const DECIMALS = "18"
 const INITIAL_PRICE = "200000000000000000000"
 
 module.exports = {
+    VERIFICATION_BLOCK_CONFIRMATIONS,
     networkConfigInfo,
     developmentChains,
     DECIMALS,

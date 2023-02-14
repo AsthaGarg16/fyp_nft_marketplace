@@ -545,4 +545,12 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         delete (listings[_nftAddress][_tokenId][_owner]);
         emit ItemCanceled(_owner, _nftAddress, _tokenId);
     }
+
+    /**
+     @notice Update AddressRegistry contract
+     @dev Only admin
+     */
+    function updateAddressRegistry(address _registry) external onlyOwner {
+        addressRegistry = IAddressRegistry(_registry);
+    }
 }

@@ -10,7 +10,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         : VERIFICATION_BLOCK_CONFIRMATIONS
 
     log("----------------------------------------------------")
-    const arguments = []
+    const arguments = [deployer, 0]
     const nftMarketplace = await deploy("NftMarketplace", {
         from: deployer,
         args: arguments,
@@ -18,11 +18,11 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         waitConfirmations: waitBlockConfirmations,
     })
 
-    // Verify the deployment
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        log("Verifying...")
-        await verify(nftMarketplace.address, arguments)
-    }
+    // // Verify the deployment
+    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    //     log("Verifying...")
+    //     await verify(nftMarketplace.address, arguments)
+    // }
     log("----------------------------------------------------")
 }
 

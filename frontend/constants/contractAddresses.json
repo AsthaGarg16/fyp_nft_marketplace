@@ -1,0 +1,10 @@
+{
+  "5": {
+    "AddressRegistry": ["0x6C9aB8A0F740BDb79B1986090FFa6A9415b777B0"],
+    "Basic_Nft": ["0xEbbd3Fd21D162e6130fbd75cD7A7Ae99bf0b0ADc"],
+    "Fractional": ["0x36B829Bdc0478E5952bF450ad7C3b7987681cb2C"],
+    "MarketAuction": ["0xf4Cb566cF169d269D94a586CAD27CBF1B7C11Bd5"],
+    "NftMarketplace": ["0xE08DdD7ADa7aC86DaeABC808d526Bc76c04dD03e"],
+    "TokenRegistry": ["0x786a7F0a2Ee9F77978392F5A625C24E52aC04cCB"]
+  }
+}

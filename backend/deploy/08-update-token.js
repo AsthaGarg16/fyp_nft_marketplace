@@ -11,20 +11,20 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     const tokenRegistry = await ethers.getContract("TokenRegistry", deployer)
 
-    const addWETHTx = await tokenRegistry.add(WETH_ADDRESS_GOERLI, "WETH")
-    await addWETHTx.wait(1)
-    console.log(`WETH token added to contract`)
+    // const addWETHTx = await tokenRegistry.add(WETH_ADDRESS_GOERLI, "WETH")
+    // await addWETHTx.wait(1)
+    // console.log(`WETH token added to contract`)
 
-    const addTSTTx = await tokenRegistry.add(TST_ADDRESS_GOERLI, "TST")
-    await addTSTTx.wait(1)
-    console.log(`TST token added to contract`)
+    // const addTSTTx = await tokenRegistry.add(TST_ADDRESS_GOERLI, "TST")
+    // await addTSTTx.wait(1)
+    // console.log(`TST token added to contract`)
 
-    const addUSDTTx = await tokenRegistry.add(USDT_ADDRESS_GOERLI, "USDT")
-    await addUSDTTx.wait(1)
-    console.log(`USDT token added to contract`)
+    // const addUSDTTx = await tokenRegistry.add(USDT_ADDRESS_GOERLI, "USDT")
+    // await addUSDTTx.wait(1)
+    // console.log(`USDT token added to contract`)
 
-    const addDAITx = await tokenRegistry.add(DAI_ADDRESS_GOERLI, "DAI")
-    await addDAITx.wait(1)
-    console.log(`DAI token added to contract`)
+    // const addDAITx = await tokenRegistry.add(DAI_ADDRESS_GOERLI, "DAI")
+    // await addDAITx.wait(1)
+    // console.log(`DAI token added to contract`)
 }
 module.exports.tags = ["all", "addTokens"]

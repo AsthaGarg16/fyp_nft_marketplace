@@ -10,7 +10,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         : VERIFICATION_BLOCK_CONFIRMATIONS
 
     log("----------------------------------------------------")
-    const arguments = []
+    const arguments = ["MyFractionalNFT", "MyFNFT"]
     const fnft = await deploy("Fractional", {
         from: deployer,
         args: arguments,
@@ -18,11 +18,11 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         waitConfirmations: waitBlockConfirmations,
     })
 
-    // Verify the deployment
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        log("Verifying...")
-        await verify(fnft.address, arguments)
-    }
+    // // Verify the deployment
+    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    //     log("Verifying...")
+    //     await verify(fnft.address, arguments)
+    // }
     log("----------------------------------------------------")
 }
 

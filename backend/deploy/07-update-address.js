@@ -11,24 +11,28 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const marketplace = await ethers.getContract("NftMarketplace", deployer)
     const tokenRegistry = await ethers.getContract("TokenRegistry", deployer)
 
-    const nftTx = await addressRegistry.updateBasicNft(nft)
+    const nftTx = await addressRegistry.updateBasicNft(nft.address)
     await nftTx.wait(1)
     console.log(`Basic_NFT address updated`)
 
-    const auctionTx = await addressRegistry.updateAuction(auction)
+    const auctionTx = await addressRegistry.updateAuction(auction.address)
     await auctionTx.wait(1)
     console.log(`Auction address updated`)
 
-    const marketplaceTx = await addressRegistry.updateMarketplace(marketplace)
+    const marketplaceTx = await addressRegistry.updateMarketplace(marketplace.address)
     await marketplaceTx.wait(1)
     console.log(`Marketplace address updated`)
 
-    const tokenTx = await addressRegistry.updateTokenRegistry(tokenRegistry)
+    const tokenTx = await addressRegistry.updateTokenRegistry(tokenRegistry.address)
     await tokenTx.wait(1)
     console.log(`Token registry address updated`)
 
-    const fnftTx = await addressRegistry.updateFractionalNFT(fnft)
+    const fnftTx = await addressRegistry.updateFractionalNFT(fnft.address)
     await fnftTx.wait(1)
     console.log(`Fractional NFT address updated`)
+
+    const registryTx = await marketplace.updateAddressRegistry(addressRegistry.address)
+    await registryTx.wait(1)
+    console.log(`Address registry address updated in marketplace`)
 }
 module.exports.tags = ["all", "AddressUpdate"]
