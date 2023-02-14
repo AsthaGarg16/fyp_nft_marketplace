@@ -9,12 +9,16 @@ import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import CartModal from "../pages/CartModal";
 import WalletModal from "../pages/WalletModal";
+import { useMoralis } from "react-moralis";
+import { ConnectButton } from "web3uikit";
+import "./button.css";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
+  const { authenticate, isAuthenticated, user } = useMoralis();
   const [showCart, setShowCart] = useState(false);
   const [showWallet, setShowWallet] = useState(false);
   const navigate = useNavigate();
@@ -27,6 +31,7 @@ export default function Navbar() {
   const pages = [
     { name: "Profile", href: "/profile" },
     { name: "My collections", href: "/my-collections" },
+    { name: "Notifications", href: "/profile" },
     { name: "Settings", href: "/settings" },
     { name: "Favourties", href: "/my-favourited" },
     { name: "Watchlist", href: "/my-watchlist" },
@@ -74,7 +79,7 @@ export default function Navbar() {
         <>
           <CartModal handleClose={closeCart} show={showCart} />
           <WalletModal handleClose={closeWallet} show={showWallet} />
-          <div className="mx-auto px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto px-2">
             <div className="relative flex h-16 items-center justify-between">
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
@@ -113,21 +118,21 @@ export default function Navbar() {
               <div className="flex flex-auto px-8 items-center">
                 <input
                   type="text"
-                  className="w-[44rem] px-8 py-2 bg-white border rounded-xl focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
+                  className="w-[26rem] px-8 py-2 bg-white border rounded-xl focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
                   placeholder="Search..."
                 />
               </div>
-              <div className="absolute right-0 flex flex-none items-center pr-2">
-                <button
+              <div className="absolute right-0 flex flex-none items-center">
+                {/* <button
                   type="button"
-                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
+                  className="rounded-full bg-gray-900 mx-2 px-2 text-gray-400 hover:text-white"
                 >
                   <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-10 w-10 stroke-2" aria-hidden="true" />
-                </button>
+                  <BellIcon className="h-8 w-8 stroke-2" aria-hidden="true" />
+                </button> */}
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
+                  className="rounded-full bg-gray-900 mx-2 px-2 text-gray-400 hover:text-white"
                   onClick={() => showCartModal()}
                 >
                   <span className="sr-only">View cart</span>
@@ -138,7 +143,7 @@ export default function Navbar() {
                 </button>
                 <button
                   type="button"
-                  className="rounded-full bg-gray-900 mx-2 px-4 text-gray-400 hover:text-white"
+                  className="rounded-full bg-gray-900 mx-2 px-2 text-gray-400 hover:text-white"
                   onClick={() => showWalletModal()}
                 >
                   <span className="sr-only">Connect Wallet</span>
@@ -187,6 +192,8 @@ export default function Navbar() {
                     </Menu.Items>
                   </Transition>
                 </Menu>
+
+                <ConnectButton moralisAuth={false} className="button" />
               </div>
             </div>
           </div>
