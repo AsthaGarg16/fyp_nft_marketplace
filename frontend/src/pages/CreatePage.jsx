@@ -9,6 +9,8 @@ import {
 import React, { useState } from "react";
 
 function PropertiesModal({ handleClose, show }) {
+  const [rows, setRows] = useState([]);
+
   const divClass =
     "bg-gray-800/75 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none " +
     (show ? "" : "hidden");
@@ -57,32 +59,37 @@ function PropertiesModal({ handleClose, show }) {
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-7 gap-4">
-                <div className="col-span-3">
-                  <input
-                    id="type"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="character"
-                    required
-                  />
+              {rows.map((item) => (
+                <div className="grid grid-cols-7 gap-4">
+                  <div className="col-span-3">
+                    <input
+                      id="type"
+                      name="type"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="character"
+                      required
+                    />
+                  </div>
+                  <div className="col-span-3">
+                    <input
+                      id="name"
+                      name="name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="male"
+                      required
+                    />
+                  </div>
+                  <div className="col-span-1 place-items-center">
+                    <button
+                      type="button"
+                      className="relative rounded-lg p-2.5 text-gray-800 dark:text-gray-300 inline-flex dark:fill-gray-300 dark:hover:bg-gray-600 dark:focus:fill-gray-100"
+                    >
+                      <TrashIcon className="h-7 w-7 stroke-2" />
+                    </button>
+                  </div>
                 </div>
-                <div className="col-span-3">
-                  <input
-                    id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="male"
-                    required
-                  />
-                </div>
-                <div className="col-span-1 place-items-center">
-                  <button
-                    type="button"
-                    className="relative rounded-lg p-2.5 text-gray-800 dark:text-gray-300 inline-flex dark:fill-gray-300 dark:hover:bg-gray-600 dark:focus:fill-gray-100"
-                  >
-                    <TrashIcon className="h-7 w-7 stroke-2" />
-                  </button>
-                </div>
-              </div>
+              ))}
+
               <div className="flex justify-items-startr">
                 <button className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 ">
                   Add more
@@ -214,6 +221,18 @@ function CreatePage() {
   const [showProperties, setShowProperties] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    // Read the form data
+    const form = e.target;
+    const formData = new FormData(form);
+
+    // Or you can work with it as a plain object:
+    const formJson = Object.fromEntries(formData.entries());
+    console.log(formJson);
+  }
+
   function showPropertiesModal() {
     setShowProperties(true);
     console.log(showProperties);
@@ -238,7 +257,7 @@ function CreatePage() {
       </h1>
       <PropertiesModal handleClose={closeProperties} show={showProperties} />
       <LevelsModal handleClose={closeLevels} show={showLevels} />
-      <form>
+      <form method="post" onSubmit={handleSubmit}>
         <div className="m-10 flex justify-between">
           <div className="overflow-x-auto w-6/12 m-5 relative text-left">
             <div>
@@ -271,7 +290,7 @@ function CreatePage() {
               <div className="flex flex-col items-start">
                 <input
                   type="text"
-                  name="name"
+                  name="external link"
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
                 />
               </div>
@@ -291,7 +310,7 @@ function CreatePage() {
               <div className="flex flex-col items-start">
                 <textarea
                   type="text"
-                  name="name"
+                  name="description"
                   rows="5"
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
                 />
@@ -326,7 +345,12 @@ function CreatePage() {
                         or drag and drop
                       </p>
                     </div>
-                    <input id="dropzone-file" type="file" className="hidden" />
+                    <input
+                      id="dropzone-file"
+                      type="file"
+                      name="file"
+                      className="hidden"
+                    />
                   </label>
                 </div>
               </div>
@@ -343,6 +367,7 @@ function CreatePage() {
               </p>
               <div className="flex flex-col items-start">
                 <select
+                  name="collection"
                   id="countries"
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
                 >
@@ -367,7 +392,7 @@ function CreatePage() {
               <div className="flex flex-col items-start">
                 <input
                   type="text"
-                  name="name"
+                  name="supply"
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
                 />
               </div>
@@ -468,7 +493,10 @@ function CreatePage() {
             </div>
           </div>
         </div>
-        <button className="p-5 bg-indigo-600 rounded-lg text-2xl font-semibold mb-10 text-white">
+        <button
+          className="p-5 bg-indigo-600 rounded-lg text-2xl font-semibold mb-10 text-white"
+          type="submit"
+        >
           Create
         </button>
       </form>

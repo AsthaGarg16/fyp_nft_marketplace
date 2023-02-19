@@ -1,10 +1,6 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-  BellIcon,
-  ShoppingCartIcon,
-  WalletIcon,
-} from "@heroicons/react/24/outline";
+import { ShoppingCartIcon, WalletIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import CartModal from "../pages/CartModal";
@@ -118,7 +114,7 @@ export default function Navbar() {
               <div className="flex flex-auto px-8 items-center">
                 <input
                   type="text"
-                  className="w-[26rem] px-8 py-2 bg-white border rounded-xl focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
+                  className="w-[28rem] px-8 py-2 bg-white border rounded-xl focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
                   placeholder="Search..."
                 />
               </div>
