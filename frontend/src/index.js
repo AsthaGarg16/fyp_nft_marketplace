@@ -4,13 +4,21 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MoralisProvider } from "react-moralis";
+import { ApolloProvider, ApolloClient, InMomeoryCache } from "@apollo/client";
+
+const client = new ApolloClient({
+  cache: InMomeoryCache(),
+  uri: "https://api.studio.thegraph.com/query/36562/nft-marketplace/v0.0.1",
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <MoralisProvider initializeOnMount={false}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <ApolloProvider client={client}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </ApolloProvider>
   </MoralisProvider>
 );
 
