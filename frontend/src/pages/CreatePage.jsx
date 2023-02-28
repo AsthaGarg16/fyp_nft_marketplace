@@ -7,10 +7,15 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
+import { useMoralis, useWeb3Contract } from "react-moralis";
+import { ethers } from "ethers";
+import networkMapping from "../constants/networkMapping.json";
 
 function PropertiesModal({ handleClose, show }) {
-  const [rows, setRows] = useState([]);
-
+  const [rows, setRows] = useState([{ name: "", type: "" }]);
+  const addRow = () => {
+    rows.push({ name: "", type: "" });
+  };
   const divClass =
     "bg-gray-800/75 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none " +
     (show ? "" : "hidden");
@@ -91,7 +96,10 @@ function PropertiesModal({ handleClose, show }) {
               ))}
 
               <div className="flex justify-items-startr">
-                <button className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 ">
+                <button
+                  className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 "
+                  onClick={addRow()}
+                >
                   Add more
                 </button>
               </div>
@@ -217,6 +225,9 @@ function LevelsModal({ handleClose, show }) {
 }
 
 function CreatePage() {
+  const { chainId, account, isWeb3Enabled } = useMoralis();
+  const chainString = chainId ? parseInt(chainId).toString() : "31337";
+
   const [enabled, setEnabled] = useState(false);
   const [showProperties, setShowProperties] = useState(false);
   const [showLevels, setShowLevels] = useState(false);

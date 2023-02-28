@@ -492,6 +492,44 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         delete (offers[_nftAddress][_tokenId][_creator]);
     }
 
+    /// @notice Method for setting royalty
+    /// @param _nftAddress NFT contract address
+    /// @param _tokenId TokenId
+    /// @param _royalty Royalty
+    function registerRoyalty(address _nftAddress, uint256 _tokenId, uint16 _royalty) external {
+        require(_royalty <= 10000, "invalid royalty");
+
+        _validOwner(_nftAddress, _tokenId, msg.sender, 1);
+
+        require(minters[_nftAddress][_tokenId] == address(0), "royalty already set");
+        minters[_nftAddress][_tokenId] = _msgSender();
+        royalties[_nftAddress][_tokenId] = _royalty;
+    }
+
+    /// @notice Method for setting royalty
+    /// @param _nftAddress NFT contract address
+    /// @param _royalty Royalty
+    function registerCollectionRoyalty(
+        address _nftAddress,
+        address _creator,
+        uint16 _royalty,
+        address _feeRecipient
+    ) external onlyOwner {
+        require(_creator != address(0), "invalid creator address");
+        require(_royalty <= 10000, "invalid royalty");
+        require(_royalty == 0 || _feeRecipient != address(0), "invalid fee recipient address");
+
+        if (collectionRoyalties[_nftAddress].creator == address(0)) {
+            collectionRoyalties[_nftAddress] = CollectionRoyalty(_royalty, _creator, _feeRecipient);
+        } else {
+            CollectionRoyalty storage collectionRoyalty = collectionRoyalties[_nftAddress];
+
+            collectionRoyalty.royalty = _royalty;
+            collectionRoyalty.feeRecipient = _feeRecipient;
+            collectionRoyalty.creator = _creator;
+        }
+    }
+
     //////////////////////
     // Getter Functions //
     //////////////////////

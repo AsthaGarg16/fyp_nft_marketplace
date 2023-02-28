@@ -15,6 +15,7 @@
     "@web3uikit/icons": "^0.2.46",
     "@web3uikit/web3": "^0.2.2",
     "autoprefixer": "^10.4.13",
+    "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "moralis": "^2.14.1",
     "moralis-v1": "^1.12.0",

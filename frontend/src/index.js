@@ -4,10 +4,10 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MoralisProvider } from "react-moralis";
-import { ApolloProvider, ApolloClient, InMomeoryCache } from "@apollo/client";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  cache: InMomeoryCache(),
+  cache: new InMemoryCache(),
   uri: "https://api.studio.thegraph.com/query/36562/nft-marketplace/v0.0.1",
 });
 
