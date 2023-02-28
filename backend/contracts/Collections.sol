@@ -18,6 +18,10 @@ contract Collections is Ownable, ReentrancyGuard {
 
     event AddedToCollection(string indexed name, address nftAddress, uint256 tokenId);
 
+    event AddedToWatchlist(string indexed name, address indexed watcher);
+
+    event RemovedFromWatchlist(string indexed name, address indexed watcher);
+
     /// @notice Structure for collection
     struct Collection {
         string logoImage;
@@ -38,6 +42,8 @@ contract Collections is Ownable, ReentrancyGuard {
 
     /// @notice CollectionName -> array of nfts
     mapping(string => Nft[]) collectionItems;
+
+    mapping(string => address[]) watchers;
 
     // /**
     //  @notice Method for creating collection
@@ -81,5 +87,22 @@ contract Collections is Ownable, ReentrancyGuard {
     ) external {
         collectionItems[collectionName].push(Nft(nftAddress, tokenId));
         emit AddedToCollection(collectionName, nftAddress, tokenId);
+    }
+
+    function addToWatchlist(string calldata collectionName) external {
+        watchers[collectionName].push(msg.sender);
+        emit AddedToWatchlist(collectionName, msg.sender);
+    }
+
+    function removeFromWatchlist(string calldata collectionName) external {
+        for (uint i = 0; i < watchers[collectionName].length; i++) {
+            if (watchers[collectionName][i] == msg.sender) {
+                watchers[collectionName][i] = watchers[collectionName][
+                    watchers[collectionName].length - 1
+                ];
+            }
+            watchers[collectionName].pop();
+        }
+        emit RemovedFromWatchlist(collectionName, msg.sender);
     }
 }

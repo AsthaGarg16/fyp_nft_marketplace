@@ -18,10 +18,10 @@ interface IAddressRegistry {
 }
 
 interface IMarketAuction {
-    function auctions(
+    function getAuction(
         address,
         uint256
-    ) external view returns (address, address, uint256, uint256, uint256, bool);
+    ) external view returns (address, address, uint256, uint256, uint256, bool, uint256);
 }
 
 interface ITokenRegistry {
@@ -394,7 +394,7 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
 
         IMarketAuction auction = IMarketAuction(addressRegistry.auction());
 
-        (, , , uint256 startTime, , bool resulted) = auction.auctions(_nftAddress, _tokenId);
+        (, , , uint256 startTime, , bool resulted, ) = auction.getAuction(_nftAddress, _tokenId);
 
         require(startTime == 0 || resulted == true, "cannot place an offer if auction is going on");
 

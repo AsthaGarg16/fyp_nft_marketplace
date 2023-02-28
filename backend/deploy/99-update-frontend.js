@@ -48,6 +48,24 @@ async function updateAbi() {
         `${frontEndAbiLocation}TokenRegistry.json`,
         tokens.interface.format(ethers.utils.FormatTypes.json)
     )
+
+    const collections = await ethers.getContract("Collections")
+    fs.writeFileSync(
+        `${frontEndAbiLocation}Collections.json`,
+        collections.interface.format(ethers.utils.FormatTypes.json)
+    )
+
+    const reviews = await ethers.getContract("Reviews")
+    fs.writeFileSync(
+        `${frontEndAbiLocation}Reviews.json`,
+        reviews.interface.format(ethers.utils.FormatTypes.json)
+    )
+
+    const users = await ethers.getContract("Users")
+    fs.writeFileSync(
+        `${frontEndAbiLocation}Users.json`,
+        users.interface.format(ethers.utils.FormatTypes.json)
+    )
 }
 
 async function updateContractAddresses() {
@@ -116,6 +134,39 @@ async function updateContractAddresses() {
         }
     } else {
         contractAddresses[chainId] = { TokenRegistry: [tokens.address] }
+    }
+    fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
+
+    const collections = await ethers.getContract("Collections")
+    contractAddresses = JSON.parse(fs.readFileSync(frontEndContractsFile, "utf8"))
+    if (chainId in contractAddresses) {
+        if (!contractAddresses[chainId]["Collections"].includes(collections.address)) {
+            contractAddresses[chainId]["Collections"].push(collections.address)
+        }
+    } else {
+        contractAddresses[chainId] = { Collections: [collections.address] }
+    }
+    fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
+
+    const reviews = await ethers.getContract("Reviews")
+    contractAddresses = JSON.parse(fs.readFileSync(frontEndContractsFile, "utf8"))
+    if (chainId in contractAddresses) {
+        if (!contractAddresses[chainId]["Reviews"].includes(reviews.address)) {
+            contractAddresses[chainId]["Reviews"].push(reviews.address)
+        }
+    } else {
+        contractAddresses[chainId] = { Reviews: [reviews.address] }
+    }
+    fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
+
+    const users = await ethers.getContract("Users")
+    contractAddresses = JSON.parse(fs.readFileSync(frontEndContractsFile, "utf8"))
+    if (chainId in contractAddresses) {
+        if (!contractAddresses[chainId]["Users"].includes(users.address)) {
+            contractAddresses[chainId]["Users"].push(users.address)
+        }
+    } else {
+        contractAddresses[chainId] = { Users: [users.address] }
     }
     fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddresses))
 }

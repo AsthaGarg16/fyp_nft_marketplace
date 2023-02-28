@@ -23,6 +23,15 @@ contract AddressRegistry is Ownable {
     /// @notice Fractional NFT contract
     address public fNft;
 
+    /// @notice Collection contract
+    address public collection;
+
+    /// @notice Reviews contract
+    address public reviews;
+
+    /// @notice User contract
+    address public users;
+
     /**
      @notice Update basic_nft contract
      @dev Only admin
@@ -62,5 +71,29 @@ contract AddressRegistry is Ownable {
      */
     function updateTokenRegistry(address _tokenRegistry) external onlyOwner {
         tokenRegistry = _tokenRegistry;
+    }
+
+    /**
+     @notice Update collection contract
+     @dev Only admin
+     */
+    function updateCollection(address _collection) external onlyOwner {
+        collection = _collection;
+    }
+
+    /**
+     @notice Update reviews registry contract
+     @dev Only admin
+     */
+    function updateReviews(address _reviews) external onlyOwner {
+        reviews = _reviews;
+    }
+
+    /**
+     @notice Update users registry contract
+     @dev Only admin
+     */
+    function updateUsers(address _users) external onlyOwner {
+        users = _users;
     }
 }
