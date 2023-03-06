@@ -20,8 +20,8 @@ const networkConfigInfo = {
 
 const developmentChains = ["hardhat", "localhost"]
 const VERIFICATION_BLOCK_CONFIRMATIONS = 6
-const frontEndContractsFile = "../frontend/constants/contractAddresses.json"
-const frontEndAbiFile = "../frontend/constants/"
+const frontEndContractsFile = "../frontend/src/constants/contractAddresses.json"
+const frontEndAbiFile = "../frontend/src/constants/"
 const DECIMALS = "18"
 const INITIAL_PRICE = "200000000000000000000"
 

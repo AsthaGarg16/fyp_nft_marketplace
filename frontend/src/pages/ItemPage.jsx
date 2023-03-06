@@ -9,6 +9,8 @@ import {
 import Collapsible from "../components/Collapsible";
 import { useScrollTo } from "../components/Scroll";
 function ItemPage() {
+  //check is msg.sender is the owner and if it is listed, display buttons accordingly (to buy, add to cart)
+
   useScrollTo(0, 0);
   return (
     <div>

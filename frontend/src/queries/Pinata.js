@@ -1,5 +1,5 @@
 import axios from "axios";
-const sendFileToIPFS = async (fileImg) => {
+export const sendFileToIPFS = async (fileImg) => {
   if (fileImg) {
     try {
       const formData = new FormData();
@@ -18,6 +18,7 @@ const sendFileToIPFS = async (fileImg) => {
 
       const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
       console.log(ImgHash);
+      return ImgHash;
     } catch (error) {
       console.log("Error sending File to IPFS: ");
       console.log(error);
@@ -25,7 +26,7 @@ const sendFileToIPFS = async (fileImg) => {
   }
 };
 
-const sendJSONtoIPFS = async (json) => {
+export const sendJSONtoIPFS = async (json) => {
   try {
     const resJSON = await axios({
       method: "post",

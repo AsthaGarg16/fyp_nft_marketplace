@@ -9,7 +9,9 @@ import {
 import React, { useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { ethers } from "ethers";
-import networkMapping from "../constants/networkMapping.json";
+import contractAddresses from "../constants/contractAddresses.json";
+import { sendFileToIPFS, sendJSONtoIPFS } from "../queries/Pinata";
+import nftAbi from "../constants/Basic_Nft.json";
 
 function PropertiesModal({ handleClose, show }) {
   const [rows, setRows] = useState([{ name: "", type: "" }]);
@@ -227,10 +229,14 @@ function LevelsModal({ handleClose, show }) {
 function CreatePage() {
   const { chainId, account, isWeb3Enabled } = useMoralis();
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
+  const marketplaceAddress = contractAddresses[chainString].NftMarketplace[0];
+  const nftAddress = contractAddresses[chainString].Basic_Nft[0];
 
   const [enabled, setEnabled] = useState(false);
   const [showProperties, setShowProperties] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
+
+  const { runContractFunction } = useWeb3Contract();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -261,6 +267,38 @@ function CreatePage() {
   const closeLevels = () => {
     setShowLevels(false);
   };
+
+  async function mintNFT(json1, json2) {
+    const imgHash = sendFileToIPFS(json1.file);
+    var infoHash;
+    if (json2) {
+      infoHash = sendJSONtoIPFS(json2);
+    }
+    const mint = {
+      abi: nftAbi,
+      contractAddress: nftAddress,
+      functionName: "mintNft",
+      params: {
+        assetUri: imgHash,
+        metadataUri: infoHash,
+      },
+    };
+
+    await runContractFunction({
+      params: mint,
+      onSuccess: (tx) => handleMintSuccess(tx, nftAddress),
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  function handleMintSuccess() {
+    //ask for approval
+    //listitem
+    //go to listing page
+  }
+
   return (
     <div>
       <h1 className="mb-10 mx-5 mt-5 text-black text-5xl font-bold dark:text-white text-left">
@@ -327,6 +365,21 @@ function CreatePage() {
                 />
               </div>
             </div>
+            <div className="mt-5">
+              <label
+                htmlFor="name"
+                className="text-2xl font-medium text-gray-700 undefined dark:text-gray-200"
+              >
+                Price
+              </label>
+              <div className="flex flex-col items-start">
+                <input
+                  type="text"
+                  name="price"
+                  className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
+                />
+              </div>
+            </div>
           </div>
           <div className="overflow-x-auto w-6/12 m-5 relative text-left">
             <div>
@@ -382,7 +435,7 @@ function CreatePage() {
                   id="countries"
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
                 >
-                  <option selected>Choose a country</option>
+                  <option selected>Choose a collection</option>
                   <option value="US">United States</option>
                   <option value="CA">Canada</option>
                   <option value="FR">France</option>
@@ -456,11 +509,10 @@ function CreatePage() {
                 <LockClosedIcon className="h-8 w-8 stroke-2 fill-gray-600 self-start flex-none m-1 dark:fill-gray-400" />
                 <div className="mx-4 flex-auto">
                   <h1 className="text-black text-2xl font-medium text-gray-700 dark:text-gray-200 text-left">
-                    Unlockable Content
+                    Unlocked for followers
                   </h1>
                   <p className="text-lg text-gray-800 dark:text-gray-400">
-                    Include content that can only be revealed by the owner of
-                    the item.
+                    Followers get early access to the item.
                   </p>
                 </div>
                 <switch

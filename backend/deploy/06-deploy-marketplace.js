@@ -8,7 +8,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const waitBlockConfirmations = developmentChains.includes(network.name)
         ? 1
         : VERIFICATION_BLOCK_CONFIRMATIONS
-
     log("----------------------------------------------------")
     const arguments = [deployer, 0]
     const nftMarketplace = await deploy("NftMarketplace", {
@@ -17,12 +16,11 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         log: true,
         waitConfirmations: waitBlockConfirmations,
     })
-
-    // // Verify the deployment
-    // if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-    //     log("Verifying...")
-    //     await verify(nftMarketplace.address, arguments)
-    // }
+    // Verify the deployment
+    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+        log("Verifying...")
+        await verify(nftMarketplace.address, arguments)
+    }
     log("----------------------------------------------------")
 }
 
