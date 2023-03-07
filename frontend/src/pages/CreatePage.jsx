@@ -13,11 +13,35 @@ import contractAddresses from "../constants/contractAddresses.json";
 import { sendFileToIPFS, sendJSONtoIPFS } from "../queries/Pinata";
 import nftAbi from "../constants/Basic_Nft.json";
 
-function PropertiesModal({ handleClose, show }) {
-  const [rows, setRows] = useState([{ name: "", type: "" }]);
+function PropertiesModal({ handleClose, show, propertiesData }) {
+  const [rows, setRows] = useState(propertiesData);
   const addRow = () => {
     rows.push({ name: "", type: "" });
   };
+
+  const addValue = (e) => {
+    if (e.target.id.split(" ")[0] === "type") {
+      let newRows = rows;
+      newRows[e.target.id.split(" ")[1]] = {
+        name: rows[e.target.id.split(" ")[1]].name,
+        type: e.target.value,
+      };
+      setRows(newRows);
+    } else {
+      let newRows = rows;
+      newRows[e.target.id.split(" ")[1]] = {
+        name: e.target.value,
+        type: rows[e.target.id.split(" ")[1]].type,
+      };
+      setRows(newRows);
+    }
+    console.log(e.target.value);
+  };
+
+  const saveAndExit = () => {
+    handleClose(rows);
+  };
+
   const divClass =
     "bg-gray-800/75 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none " +
     (show ? "" : "hidden");
@@ -66,24 +90,26 @@ function PropertiesModal({ handleClose, show }) {
                   </p>
                 </div>
               </div>
-              {rows.map((item) => (
+              {rows.map((item, index) => (
                 <div className="grid grid-cols-7 gap-4">
                   <div className="col-span-3">
                     <input
-                      id="type"
+                      id={"type " + index}
                       name="type"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="character"
                       required
+                      onBlur={addValue}
                     />
                   </div>
                   <div className="col-span-3">
                     <input
-                      id="name"
+                      id={"name " + index}
                       name="name"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="male"
                       required
+                      onBlur={addValue}
                     />
                   </div>
                   <div className="col-span-1 place-items-center">
@@ -100,7 +126,7 @@ function PropertiesModal({ handleClose, show }) {
               <div className="flex justify-items-startr">
                 <button
                   className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 "
-                  onClick={addRow()}
+                  onClick={addRow}
                 >
                   Add more
                 </button>
@@ -108,7 +134,7 @@ function PropertiesModal({ handleClose, show }) {
 
               <button
                 type="submit"
-                onClick={handleClose}
+                onClick={saveAndExit}
                 className="text-white font-medium text-2xl bg-indigo-600 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 rounded-lg px-5 py-2 text-center dark:bg-indigo-500 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
               >
                 Save
@@ -121,7 +147,44 @@ function PropertiesModal({ handleClose, show }) {
   );
 }
 
-function LevelsModal({ handleClose, show }) {
+function LevelsModal({ handleClose, show, levelsData }) {
+  const [rows, setRows] = useState(levelsData);
+  const addRow = () => {
+    rows.push({ name: "", value1: "", value2: "" });
+  };
+
+  const addValue = (e) => {
+    if (e.target.id.split(" ")[0] === "name") {
+      let newRows = rows;
+      newRows[e.target.id.split(" ")[1]] = {
+        name: e.target.value,
+        value1: rows[e.target.id.split(" ")[1]].value1,
+        value2: rows[e.target.id.split(" ")[1]].value2,
+      };
+      setRows(newRows);
+    } else if (e.target.id.split(" ")[0] === "value1") {
+      let newRows = rows;
+      newRows[e.target.id.split(" ")[1]] = {
+        name: rows[e.target.id.split(" ")[1]].name,
+        value1: e.target.value,
+        value2: rows[e.target.id.split(" ")[1]].value2,
+      };
+      setRows(newRows);
+    } else {
+      let newRows = rows;
+      newRows[e.target.id.split(" ")[1]] = {
+        name: rows[e.target.id.split(" ")[1]].name,
+        value1: rows[e.target.id.split(" ")[1]].value1,
+        value2: e.target.value,
+      };
+      setRows(newRows);
+    }
+  };
+
+  const saveAndExit = () => {
+    handleClose(rows);
+  };
+
   const divClass =
     "bg-gray-800/75 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none " +
     (show ? "" : "hidden");
@@ -170,41 +233,44 @@ function LevelsModal({ handleClose, show }) {
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-7 gap-4">
-                <div className="col-span-3">
-                  <input
-                    id="type"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="speed"
-                    required
-                  />
+              {rows.map((item, index) => (
+                <div className="grid grid-cols-7 gap-4">
+                  <div className="col-span-3">
+                    <input
+                      id={"name " + index}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="speed"
+                      required
+                    />
+                  </div>
+                  <div className="col-span-3 flex">
+                    <input
+                      id={"value1 " + index}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="3"
+                      required
+                    />
+                    <p className="text-xl mx-5 my-2 text-center dark:text-gray-300 text-gray-700">
+                      of
+                    </p>
+                    <input
+                      id={"value2 " + index}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="5"
+                      required
+                    />
+                  </div>
+                  <div className="col-span-1 place-items-center">
+                    <button
+                      type="button"
+                      className="relative rounded-lg p-2.5 text-gray-800 dark:text-gray-300 inline-flex dark:fill-gray-300 dark:hover:bg-gray-600 dark:focus:fill-gray-100"
+                    >
+                      <TrashIcon className="h-7 w-7 stroke-2" />
+                    </button>
+                  </div>
                 </div>
-                <div className="col-span-3 flex">
-                  <input
-                    id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="3"
-                    required
-                  />
-                  <p className="text-xl mx-5 my-2 text-center dark:text-gray-300 text-gray-700">
-                    of
-                  </p>
-                  <input
-                    id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="5"
-                    required
-                  />
-                </div>
-                <div className="col-span-1 place-items-center">
-                  <button
-                    type="button"
-                    className="relative rounded-lg p-2.5 text-gray-800 dark:text-gray-300 inline-flex dark:fill-gray-300 dark:hover:bg-gray-600 dark:focus:fill-gray-100"
-                  >
-                    <TrashIcon className="h-7 w-7 stroke-2" />
-                  </button>
-                </div>
-              </div>
+              ))}
+
               <div className="flex justify-items-startr">
                 <button className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 ">
                   Add more
@@ -213,7 +279,7 @@ function LevelsModal({ handleClose, show }) {
 
               <button
                 type="submit"
-                onClick={handleClose}
+                onClick={saveAndExit}
                 className="text-white font-medium text-2xl bg-indigo-600 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 rounded-lg px-5 py-2 text-center dark:bg-indigo-500 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
               >
                 Save
@@ -229,12 +295,16 @@ function LevelsModal({ handleClose, show }) {
 function CreatePage() {
   const { chainId, account, isWeb3Enabled } = useMoralis();
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
-  const marketplaceAddress = contractAddresses[chainString].NftMarketplace[0];
-  const nftAddress = contractAddresses[chainString].Basic_Nft[0];
+  const marketplaceAddress =
+    contractAddresses[chainString]["NftMarketplace"][1];
+  const nftAddress = contractAddresses[chainString].Basic_Nft[1];
 
   const [enabled, setEnabled] = useState(false);
   const [showProperties, setShowProperties] = useState(false);
   const [showLevels, setShowLevels] = useState(false);
+
+  const [properties, setProperties] = useState([{ name: "", type: "" }]);
+  const [levels, setLevels] = useState([{ name: "", value1: "", value2: "" }]);
 
   const { runContractFunction } = useWeb3Contract();
 
@@ -246,7 +316,9 @@ function CreatePage() {
     const formData = new FormData(form);
 
     // Or you can work with it as a plain object:
-    const formJson = Object.fromEntries(formData.entries());
+    let formJson = Object.fromEntries(formData.entries());
+    formJson["Properties"] = properties;
+    formJson["Levels"] = levels;
     console.log(formJson);
   }
 
@@ -255,7 +327,8 @@ function CreatePage() {
     console.log(showProperties);
   }
 
-  const closeProperties = () => {
+  const closeProperties = (propertiesData) => {
+    setProperties(propertiesData);
     setShowProperties(false);
   };
 
@@ -264,7 +337,8 @@ function CreatePage() {
     console.log(showLevels);
   }
 
-  const closeLevels = () => {
+  const closeLevels = (levelsData) => {
+    setLevels(levelsData);
     setShowLevels(false);
   };
 
@@ -304,8 +378,16 @@ function CreatePage() {
       <h1 className="mb-10 mx-5 mt-5 text-black text-5xl font-bold dark:text-white text-left">
         Create New Item
       </h1>
-      <PropertiesModal handleClose={closeProperties} show={showProperties} />
-      <LevelsModal handleClose={closeLevels} show={showLevels} />
+      <PropertiesModal
+        handleClose={closeProperties}
+        show={showProperties}
+        propertiesData={properties}
+      />
+      <LevelsModal
+        handleClose={closeLevels}
+        show={showLevels}
+        levelsData={levels}
+      />
       <form method="post" onSubmit={handleSubmit}>
         <div className="m-10 flex justify-between">
           <div className="overflow-x-auto w-6/12 m-5 relative text-left">
@@ -396,7 +478,7 @@ function CreatePage() {
               <div className="flex flex-col items-center mt-5">
                 <div className="flex items-center justify-center w-1/2 h-44">
                   <label
-                    for="dropzone-file"
+                    hmtlFor="dropzone-file"
                     className="flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                   >
                     <div className="flex flex-col items-center justify-center pt-5 pb-6 mt-5">

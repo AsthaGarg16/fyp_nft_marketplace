@@ -5,12 +5,12 @@ function MyCollection() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+    <div className="m-5">
+      <h1 className="mb-4 text-5xl font-bold leading-none text-gray-900 md:text-3xl lg:text-5xl dark:text-white text-left">
         My Collections
       </h1>
       <button
-        className="p-5 bg-indigo-600 rounded-lg text-2xl font-semibold mb-10 text-white"
+        className="p-3 bg-indigo-600 rounded-lg text-2xl font-semibold mb-10 mt-5 text-white self-start"
         onClick={() => {
           navigate("/create-collection");
         }}
