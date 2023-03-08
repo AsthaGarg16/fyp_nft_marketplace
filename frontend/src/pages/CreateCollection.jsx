@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import {
-  ChartBarIcon,
-  CloudArrowUpIcon,
-  ExclamationTriangleIcon,
-  ListBulletIcon,
-  LockClosedIcon,
-  TrashIcon,
-} from "@heroicons/react/20/solid";
+import { CloudArrowUpIcon } from "@heroicons/react/20/solid";
+import collectionAbi from "../constants/Collections.json";
+import addresses from "../constants/contractAddresses.json";
+import { useMoralis, useWeb3Contract } from "react-moralis";
+import { ethers } from "ethers";
+import { sendFileToIPFS, sendJSONtoIPFS } from "../queries/Pinata";
 
 function CreateCollection() {
+  const { runContractFunction } = useWeb3Contract();
+  const collectionAddress = addresses[5].Collections;
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -20,7 +20,44 @@ function CreateCollection() {
     let formJson = Object.fromEntries(formData.entries());
 
     console.log(formJson);
+    const logouri = sendFileToIPFS(formJson.logoImage);
+    const bannerUri = sendFileToIPFS(formJson.bannerImage);
+    let metadata = {
+      url: formJson.url,
+      description: formJson.description,
+      links: formJson.links,
+      paymentToken: formJson.paymentToken,
+    };
+
+    const metaUri = sendJSONtoIPFS(metadata);
+    createCollection(formJson, logouri, bannerUri, metaUri);
   }
+
+  async function createCollection(json, logoUri, bannerUri, metaUri) {
+    const create = {
+      abi: collectionAbi,
+      contractAddress: collectionAddress,
+      functionName: "createCollection",
+      params: {
+        name: json.name,
+        logoImage: logoUri,
+        bannerImage: bannerUri,
+        earnings: json.creatorPercentage,
+        category: json.category,
+        metaInfoUri: metaUri,
+      },
+    };
+
+    await runContractFunction({
+      params: create,
+      onSuccess: (tx) => handleCreateSuccess(tx, collectionAddress),
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  function handleCreateSuccess() {}
 
   return (
     <div>

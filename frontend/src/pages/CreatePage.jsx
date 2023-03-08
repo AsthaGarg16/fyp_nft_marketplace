@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
-import { ethers } from "ethers";
 import contractAddresses from "../constants/contractAddresses.json";
 import { sendFileToIPFS, sendJSONtoIPFS } from "../queries/Pinata";
 import nftAbi from "../constants/Basic_Nft.json";
@@ -241,6 +240,7 @@ function LevelsModal({ handleClose, show, levelsData }) {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="speed"
                       required
+                      onBlur={addValue}
                     />
                   </div>
                   <div className="col-span-3 flex">
@@ -249,6 +249,7 @@ function LevelsModal({ handleClose, show, levelsData }) {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="3"
                       required
+                      onBlur={addValue}
                     />
                     <p className="text-xl mx-5 my-2 text-center dark:text-gray-300 text-gray-700">
                       of
@@ -258,6 +259,7 @@ function LevelsModal({ handleClose, show, levelsData }) {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="5"
                       required
+                      onBlur={addValue}
                     />
                   </div>
                   <div className="col-span-1 place-items-center">
@@ -272,7 +274,10 @@ function LevelsModal({ handleClose, show, levelsData }) {
               ))}
 
               <div className="flex justify-items-startr">
-                <button className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 ">
+                <button
+                  onClick={addRow}
+                  className="dark:text-gray-200 text-gray-800 font-medium text-2xl dark:bg-gray-600 rounded-lg bg-gray-300 dark:hover:bg-gray-500 hover:bg-gray-400 px-5 py-2 "
+                >
                   Add more
                 </button>
               </div>
