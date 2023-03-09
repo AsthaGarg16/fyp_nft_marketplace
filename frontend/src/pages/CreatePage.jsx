@@ -374,7 +374,6 @@ function CreatePage() {
 
   function handleMintSuccess() {
     //ask for approval
-    //listitem
     //go to listing page
   }
 

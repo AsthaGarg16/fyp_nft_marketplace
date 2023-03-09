@@ -2,14 +2,78 @@ import {
   ClockIcon,
   EyeIcon,
   HeartIcon,
+  ListBulletIcon,
   PresentationChartLineIcon,
   ShoppingCartIcon,
   TagIcon,
 } from "@heroicons/react/20/solid";
 import Collapsible from "../components/Collapsible";
 import { useScrollTo } from "../components/Scroll";
+import { React, useState, useEffect } from "react";
+import OfferTable from "../components/OfferTable";
 function ItemPage() {
   //check is msg.sender is the owner and if it is listed, display buttons accordingly (to buy, add to cart)
+  const [isOwned, setIsOwned] = useState(false);
+
+  useEffect(() => {
+    //set isOwned
+  }, []);
+
+  const heading = () => {
+    return (
+      <div className="flex">
+        <ListBulletIcon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
+        <p className="dark:text-gray-100 text-gray-900 text-xl">Offers</p>
+      </div>
+    );
+  };
+
+  const table = [
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+    {
+      Price: "$299",
+      FloorDifference: "2% below",
+      From: "User name / address",
+    },
+  ];
+
+  const offersContent = () => {
+    return <OfferTable tableContent={table} />;
+  };
 
   useScrollTo(0, 0);
   return (
@@ -55,7 +119,13 @@ function ItemPage() {
               <p className="dark:text-white text-black font-bold text-4xl tracking-wide mb-4">
                 0.58 ETH
               </p>
-              <div className="grid grid-cols-2 justify-items-stretch">
+              <div
+                className={
+                  isOwned
+                    ? "hidden grid grid-cols-2 justify-items-stretch"
+                    : "grid grid-cols-2 justify-items-stretch"
+                }
+              >
                 <button
                   type="button"
                   className="text-white bg-indigo-600 font-medium rounded-xl text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 hover:bg-indigo-700 dark:hover:bg-indigo-500"
@@ -76,13 +146,17 @@ function ItemPage() {
           <div className="my-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
             <div className="flex items-center mb-3 px-3">
               <PresentationChartLineIcon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
-              <p className="dark:text-gray-300 text-gray-700 text-xl">
+              <p className="dark:text-gray-100 text-gray-900 text-xl">
                 Price History
               </p>
             </div>
             <hr class="h-0.5 bg-gray-600 border-0 dark:bg-gray-600"></hr>
           </div>
-          <Collapsible />
+          <Collapsible
+            header={heading()}
+            initialOpen={true}
+            content={offersContent()}
+          />
         </div>
       </div>
     </div>
