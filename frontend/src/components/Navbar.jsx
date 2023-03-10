@@ -75,21 +75,33 @@ export default function Navbar() {
         <>
           <CartModal handleClose={closeCart} show={showCart} />
           <WalletModal handleClose={closeWallet} show={showWallet} />
-          <div className="mx-auto px-2">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div className="mx-auto px-3">
+            <div className="relative flex h-16 items-center grid grid-cols-6">
+              <div className="flex flex-1 items-center sm:items-stretch sm:justify-start col-span-1">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    className="block h-10 w-10"
+                    src={require("../assets/Logo.PNG")}
                     alt="Your Company"
                   />
-                  <img
+                  {/* <img
                     className="hidden h-8 w-auto lg:block"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
-                  />
+                  /> */}
                 </div>
+                <div className="flex flex-shrink-0 items-center ml-2">
+                  <p className="dark:text-white text-black font-bold text-4xl tracking-tighter">
+                    NftNook
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-auto px-8 items-center col-span-3">
+                <input
+                  type="text"
+                  className="w-[20rem] px-8 py-2 bg-white border rounded-xl focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
+                  placeholder="Search..."
+                />
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
@@ -111,14 +123,8 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-auto px-8 items-center">
-                <input
-                  type="text"
-                  className="w-[28rem] px-8 py-2 bg-white border rounded-xl focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none focus:ring text-base"
-                  placeholder="Search..."
-                />
-              </div>
-              <div className="absolute right-0 flex flex-none items-center">
+
+              <div className="absolute right-0 flex flex-none items-center col-span-2">
                 {/* <button
                   type="button"
                   className="rounded-full bg-gray-900 mx-2 px-2 text-gray-400 hover:text-white"

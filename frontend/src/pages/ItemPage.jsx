@@ -1,7 +1,12 @@
 import {
+  ArrowsRightLeftIcon,
+  Bars3Icon,
+  BookmarkIcon,
   ClockIcon,
+  DocumentTextIcon,
   EyeIcon,
   HeartIcon,
+  IdentificationIcon,
   ListBulletIcon,
   PresentationChartLineIcon,
   ShoppingCartIcon,
@@ -11,6 +16,7 @@ import Collapsible from "../components/Collapsible";
 import { useScrollTo } from "../components/Scroll";
 import { React, useState, useEffect } from "react";
 import OfferTable from "../components/OfferTable";
+import AttributeCard from "../components/AttributeCard";
 function ItemPage() {
   //check is msg.sender is the owner and if it is listed, display buttons accordingly (to buy, add to cart)
   const [isOwned, setIsOwned] = useState(false);
@@ -80,12 +86,46 @@ function ItemPage() {
     <div>
       <div className="flex">
         <div className="w-1/2 m-5">
-          <div className="h-[56rem]">
+          <div>
             <img
               src={require("../assets/nft.jpg")}
               alt="nft"
               className="object-contain rounded-xl"
             />
+          </div>
+          <div className="my-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
+            <div className="flex items-center mb-3 px-3">
+              <Bars3Icon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
+              <p className="dark:text-gray-100 text-gray-900 text-xl">
+                Description
+              </p>
+            </div>
+            <hr class="h-0.5 bg-gray-600 border-0 dark:bg-gray-600"></hr>
+            <p className="text-md text-gray-800 dark:text-gray-200 m-2 text-left">
+              This will be the description of the item listed
+            </p>
+          </div>
+          <div className="my-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
+            <div className="flex items-center mb-3 px-3">
+              <BookmarkIcon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
+              <p className="dark:text-gray-100 text-gray-900 text-xl">
+                Attributes
+              </p>
+            </div>
+            <hr class="h-0.5 bg-gray-600 border-0 dark:bg-gray-600"></hr>
+            <AttributeCard category={"Oants"} value={"blue"} />
+          </div>
+          <div className="my-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
+            <div className="flex items-center mb-3 px-3">
+              <IdentificationIcon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
+              <p className="dark:text-gray-100 text-gray-900 text-xl">
+                Details
+              </p>
+            </div>
+            <hr class="h-0.5 bg-gray-600 border-0 dark:bg-gray-600"></hr>
+            <p className="text-md text-gray-800 dark:text-gray-200 m-2 text-left">
+              This will be the description of the item listed
+            </p>
           </div>
         </div>
         <div className="text-left w-1/2 m-5">
@@ -107,7 +147,7 @@ function ItemPage() {
           <div className="my-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
             <div className="flex items-center mb-3 px-3">
               <ClockIcon className="h-8 w-8 stroke-gray-700 dark:fill-gray-300 dark:stroke-gray-300 mr-2" />
-              <p className="dark:text-gray-300 text-gray-700 text-xl">
+              <p className="dark:text-gray-100 text-gray-900 text-xl">
                 Sale ends February 27, 2023 at 1:20 PM GMT+8
               </p>
             </div>
@@ -158,6 +198,18 @@ function ItemPage() {
             content={offersContent()}
           />
         </div>
+      </div>
+      <div className="m-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
+        <div className="flex items-center mb-3 px-3">
+          <ArrowsRightLeftIcon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
+          <p className="dark:text-gray-100 text-gray-900 text-xl">
+            Item Activity
+          </p>
+        </div>
+        <hr class="h-0.5 bg-gray-600 border-0 dark:bg-gray-600"></hr>
+        <p className="text-md text-gray-800 dark:text-gray-200 m-2 text-left">
+          This will be the description of the item listed
+        </p>
       </div>
     </div>
   );
