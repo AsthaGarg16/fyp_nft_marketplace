@@ -17,6 +17,7 @@ import { useScrollTo } from "../components/Scroll";
 import { React, useState, useEffect } from "react";
 import OfferTable from "../components/OfferTable";
 import AttributeCard from "../components/AttributeCard";
+import PriceChart from "../components/PriceChart";
 function ItemPage() {
   //check is msg.sender is the owner and if it is listed, display buttons accordingly (to buy, add to cart)
   const [isOwned, setIsOwned] = useState(false);
@@ -191,6 +192,7 @@ function ItemPage() {
               </p>
             </div>
             <hr class="h-0.5 bg-gray-600 border-0 dark:bg-gray-600"></hr>
+            <PriceChart />
           </div>
           <Collapsible
             header={heading()}
@@ -199,7 +201,7 @@ function ItemPage() {
           />
         </div>
       </div>
-      <div className="m-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-5 dark:bg-gray-700/50">
+      <div className="mb-5 mx-5 border-2 dark:border-gray-600 border-gray-400 rounded-lg py-3 dark:bg-gray-700/50">
         <div className="flex items-center mb-3 px-3">
           <ArrowsRightLeftIcon className="h-8 w-8 stroke-gray-700 fill-none dark:stroke-gray-300 mr-2" />
           <p className="dark:text-gray-100 text-gray-900 text-xl">

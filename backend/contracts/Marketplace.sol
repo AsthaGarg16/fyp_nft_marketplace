@@ -566,14 +566,14 @@ contract NftMarketplace is Ownable, ReentrancyGuard {
         }
     }
 
-    function _validPayToken(address _payToken) internal {
-        require(
-            _payToken == address(0) ||
-                (addressRegistry.tokenRegistry() != address(0) &&
-                    ITokenRegistry(addressRegistry.tokenRegistry()).enabled(_payToken)),
-            "invalid pay token"
-        );
-    }
+    // function _validPayToken(address _payToken) internal {
+    //     require(
+    //         _payToken == address(0) ||
+    //             (addressRegistry.tokenRegistry() != address(0) &&
+    //                 ITokenRegistry(addressRegistry.tokenRegistry()).enabled(_payToken)),
+    //         "invalid pay token"
+    //     );
+    // }
 
     function _deleteListing(address _nftAddress, uint256 _tokenId, address _owner) private {
         Listing memory listedItem = listings[_nftAddress][_tokenId][_owner];

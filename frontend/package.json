@@ -17,6 +17,7 @@
     "@web3uikit/icons": "^0.2.46",
     "@web3uikit/web3": "^0.2.2",
     "autoprefixer": "^10.4.13",
+    "chart.js": "2.9.3",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "magic-sdk": "^13.6.0",
