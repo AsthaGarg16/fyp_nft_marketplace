@@ -20,7 +20,7 @@ function PriceChart(props) {
             label: new Date().getFullYear(),
             backgroundColor: "#3182ce",
             borderColor: "#3182ce",
-            data: [65, 78, 66, 44, 56, 67, 75],
+            // data: [65, 78, 66, 44, 56, 67, 75],
             fill: false,
           },
         ],

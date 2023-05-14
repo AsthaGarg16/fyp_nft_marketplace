@@ -1,0 +1,5 @@
+Painting1
+desc - "This is the first painting  showing the abtracts effect of yellow colors"
+0.02
+1
+Color  - Yellow

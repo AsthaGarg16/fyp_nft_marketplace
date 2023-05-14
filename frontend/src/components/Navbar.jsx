@@ -91,7 +91,7 @@ export default function Navbar() {
                   /> */}
                 </div>
                 <div className="flex flex-shrink-0 items-center ml-2">
-                  <p className="dark:text-white text-black font-bold text-4xl tracking-tighter">
+                  <p className="text-white font-bold text-4xl tracking-tighter">
                     NftNook
                   </p>
                 </div>
@@ -162,7 +162,7 @@ export default function Navbar() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-12 w-12 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={require("../assets/profile1.png")}
                         alt=""
                       />
                     </Menu.Button>

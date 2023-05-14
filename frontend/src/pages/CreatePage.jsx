@@ -310,6 +310,7 @@ function CreatePage() {
 
   const [properties, setProperties] = useState([{ name: "", type: "" }]);
   const [levels, setLevels] = useState([{ name: "", value1: "", value2: "" }]);
+  const [image, setImageFile] = useState();
 
   const { runContractFunction } = useWeb3Contract();
 
@@ -375,6 +376,10 @@ function CreatePage() {
   function handleMintSuccess() {
     //ask for approval
     //go to listing page
+  }
+
+  function handleImageChange(event) {
+    setImageFile(URL.createObjectURL(event.target.files[0]));
   }
 
   return (
@@ -480,7 +485,7 @@ function CreatePage() {
                 OGG, GLB, GLTF. Max size: 100 MB
               </p>
               <div className="flex flex-col items-center mt-5">
-                <div className="flex items-center justify-center w-1/2 h-44">
+                <div className="flex items-center justify-center w-full h-44">
                   <label
                     hmtlFor="dropzone-file"
                     className="flex flex-col items-center justify-center w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -500,9 +505,19 @@ function CreatePage() {
                       type="file"
                       name="file"
                       className="hidden"
+                      onChange={handleImageChange}
                     />
                   </label>
                 </div>
+                {image && (
+                  <div className="w-48 h-48 items-center mx-10">
+                    <img
+                      src={require("../assets/nft9.jpg")}
+                      alt="logo"
+                      className="object-cover w-48 h-48"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="mt-5">
@@ -522,10 +537,7 @@ function CreatePage() {
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
                 >
                   <option selected>Choose a collection</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="FR">France</option>
-                  <option value="DE">Germany</option>
+                  <option value="ABSTRACT">Abstract</option>
                 </select>
               </div>
             </div>
@@ -626,15 +638,15 @@ function CreatePage() {
                   </p>
                 </div>
                 <switch
-                  checked="true"
+                  checked="false"
                   onChange={() => setEnabled(!enabled)}
-                  className={`${true ? "bg-indigo-600" : "bg-gray-500"}
+                  className={`${false ? "bg-indigo-600" : "bg-gray-500"}
           relative inline-flex h-[34px] w-[70px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                 >
                   <span className="sr-only">Use setting</span>
                   <span
-                    aria-hidden="true"
-                    className={`${true ? "translate-x-9" : "translate-x-0"}
+                    aria-hidden="false"
+                    className={`${false ? "translate-x-9" : "translate-x-0"}
             pointer-events-none inline-block h-[30px] w-[30px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
                   />
                 </switch>

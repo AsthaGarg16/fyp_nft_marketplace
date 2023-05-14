@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CloudArrowUpIcon } from "@heroicons/react/20/solid";
 import collectionAbi from "../constants/Collections.json";
 import addresses from "../constants/contractAddresses.json";
@@ -7,30 +8,46 @@ import { ethers } from "ethers";
 import { sendFileToIPFS, sendJSONtoIPFS } from "../queries/Pinata";
 
 function CreateCollection() {
+  const navigate = useNavigate();
+  const [logoFile, setLogoFile] = useState();
+  const [bannerFile, setBannerFile] = useState();
   const { runContractFunction } = useWeb3Contract();
   const collectionAddress = addresses[5].Collections;
+
+  function handleLogoChange(event) {
+    console.log(event);
+    setLogoFile(URL.createObjectURL(event.target.files[0]));
+  }
+
+  function handleBannerChange(event) {
+    console.log(event);
+    setBannerFile(" ");
+  }
+
   function handleSubmit(e) {
-    e.preventDefault();
+    //changed
+    handleCreateSuccess();
+    // e.preventDefault();
 
-    // Read the form data
-    const form = e.target;
-    const formData = new FormData(form);
+    // // Read the form data
+    // const form = e.target;
+    // const formData = new FormData(form);
 
-    // Or you can work with it as a plain object:
-    let formJson = Object.fromEntries(formData.entries());
+    // // Or you can work with it as a plain object:
+    // let formJson = Object.fromEntries(formData.entries());
 
-    console.log(formJson);
-    const logouri = sendFileToIPFS(formJson.logoImage);
-    const bannerUri = sendFileToIPFS(formJson.bannerImage);
-    let metadata = {
-      url: formJson.url,
-      description: formJson.description,
-      links: formJson.links,
-      paymentToken: formJson.paymentToken,
-    };
+    // console.log(formJson);
+    // const logouri = sendFileToIPFS(formJson.logoImage);
+    // const bannerUri = sendFileToIPFS(formJson.bannerImage);
+    // let metadata = {
+    //   url: formJson.url,
+    //   description: formJson.description,
+    //   links: formJson.links,
+    //   paymentToken: formJson.paymentToken,
+    // };
 
-    const metaUri = sendJSONtoIPFS(metadata);
-    createCollection(formJson, logouri, bannerUri, metaUri);
+    // const metaUri = sendJSONtoIPFS(metadata);
+    // createCollection(formJson, logouri, bannerUri, metaUri);
   }
 
   async function createCollection(json, logoUri, bannerUri, metaUri) {
@@ -52,12 +69,15 @@ function CreateCollection() {
       params: create,
       onSuccess: (tx) => handleCreateSuccess(tx, collectionAddress),
       onError: (error) => {
+        console.log("error in contract function");
         console.log(error);
       },
     });
   }
 
-  function handleCreateSuccess() {}
+  function handleCreateSuccess() {
+    navigate("/my-collection");
+  }
 
   return (
     <div>
@@ -77,7 +97,7 @@ function CreateCollection() {
               File types supported: JPG, PNG, GIF, SVG
             </p>
             <div className="flex flex-col items-center mt-5">
-              <div className="flex items-center w-1/2 h-48">
+              <div className="flex items-center w-full h-48">
                 <label
                   htmlFor="dropzone-file"
                   className="flex flex-col items-center w-48 h-48 border-2 border-gray-300 border-dashed rounded-full cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -97,8 +117,18 @@ function CreateCollection() {
                     type="file"
                     name="logoImage"
                     className="hidden"
+                    onChange={handleLogoChange}
                   />
                 </label>
+                {logoFile && (
+                  <div className="w-48 h-48 items-center mx-10">
+                    <img
+                      src={logoFile}
+                      alt="logo"
+                      className="object-cover w-48 h-48"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -113,9 +143,9 @@ function CreateCollection() {
               File types supported: JPG, PNG, GIF, SVG
             </p>
             <div className="flex flex-col items-center mt-5">
-              <div className="flex items-center  w-1/2 h-44">
+              <div className="flex items-center  w-full h-44">
                 <label
-                  htmlFor="dropzone-file"
+                  htmlFor="dropzone-file2"
                   className="flex flex-col items-center  w-full h-44 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
                   <div className="flex flex-col items-center  pt-5 pb-6 mt-5">
@@ -129,12 +159,22 @@ function CreateCollection() {
                     </p>
                   </div>
                   <input
-                    id="dropzone-file"
+                    id="dropzone-file2"
                     type="file"
                     name="bannerImage"
                     className="hidden"
+                    onChange={handleBannerChange}
                   />
                 </label>
+                {bannerFile && (
+                  <div className="w-48 h-48 items-center mx-10">
+                    <img
+                      src={require("../assets/banner_collection.jpg")}
+                      alt="banner"
+                      className="object-cover w-48 h-48"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -201,19 +241,24 @@ function CreateCollection() {
               Category
             </label>
             <p className="text-md text-gray-800 dark:text-gray-400">
-              This is the collection where your item will appear.
+              This is the category where your item will appear.
             </p>
             <div className="flex flex-col items-start">
               <select
                 name="category"
-                id="countries"
+                id="categories"
                 className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
               >
-                <option selected>Choose a collection</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                <option selected>Choose a category</option>
+                <option value="ART">Art</option>
+                <option value="COLLECTIBLES">Collectibles</option>
+                <option value="DOMAINNAMES">Domain Names</option>
+                <option value="MUSIC">Music</option>
+                <option value="PHOTOGRAPHY">Photography</option>
+                <option value="SPORTS">Sports</option>
+                <option value="VIRTUALWORLDS">Virtual Worlds</option>
+                <option value="TRADINGCARDS">Trading Cards</option>
+                <option value="FRACTIONALNFT">Fractional NFT</option>
               </select>
             </div>
           </div>
@@ -273,11 +318,11 @@ function CreateCollection() {
                 id="countries"
                 className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
               >
-                <option selected>Choose a collection</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                <option selected>Choose a token</option>
+                <option value="WETH">WETH</option>
+                <option value="TST">TST</option>
+                <option value="USDT">USDT</option>
+                <option value="DAI">DAI</option>
               </select>
             </div>
           </div>

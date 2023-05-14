@@ -9,8 +9,10 @@ import StatPage from "./pages/StatPage";
 import CreatePage from "./pages/CreatePage";
 import CollectionPage from "./pages/CollectionPage";
 import ItemPage from "./pages/ItemPage";
+import UnlistedItemPage from "./pages/UnlistedItemPage";
 import MyCollection from "./pages/MyCollections";
 import CreateCollection from "./pages/CreateCollection";
+import ListPage from "./pages/ListPage";
 
 function App() {
   return (
@@ -27,8 +29,10 @@ function App() {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/collection" element={<CollectionPage />} />
             <Route path="/item" element={<ItemPage />} />
+            <Route path="/unlisted-item" element={<UnlistedItemPage />} />
             <Route path="/my-collections" element={<MyCollection />} />
             <Route path="/create-collection" element={<CreateCollection />} />
+            <Route path="/list" element={<ListPage />} />
           </Routes>
         </div>
       </BrowserRouter>

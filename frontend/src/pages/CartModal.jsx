@@ -6,24 +6,22 @@ function CartItemList() {
     <div className="grid grid-cols-8 gap-4 dark:hover:bg-gray-600 p-2 rounded-lg hover:bg-gray-400">
       <div className="col-span-1">
         <img
-          className="w-18 h-18 object-cover rounded-lg shadow-lg "
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+          className="w-18 h-24 object-cover rounded-lg shadow-lg "
+          src={require("../assets/nft.jpg")}
           alt="Profile"
         />
       </div>
       <div className="col-span-5 justify-self-start text-left self-center">
         <p className="font-bold text-xl dark:text-white text-gray-900">
-          Item Name
+          Party Ape
         </p>
-        <p className="font-bold text-xl dark:text-white text-gray-900">
-          Creator
-        </p>
-        <p className="text-lg dark:text-gray-300 text-gray-700">
-          Creator earnings
-        </p>
+        <p className="font-bold text-xl dark:text-white text-gray-900">Apes</p>
+        <p className="text-lg dark:text-gray-300 text-gray-700">0.1%</p>
       </div>
       <div className="col-span-1 justify-self-end text-right self-center">
-        <p className="font-bold text-xl dark:text-white text-gray-900">0 ETH</p>
+        <p className="font-bold text-xl dark:text-white text-gray-900">
+          0.58 ETH
+        </p>
       </div>
       <div className="col-span-1 justify-self-center self-center">
         <button
@@ -72,7 +70,7 @@ function CartModal({ show, handleClose }) {
             <hr className="h-0.5 mt-3 bg-gray-600 border-0 dark:bg-gray-600"></hr>
             <div className="grid grid-cols-2 mb-5">
               <p className="font-medium mt-3 text-xl dark:text-gray-100 text-gray-900 justify-self-start">
-                3 items
+                1 item
               </p>
               <button className="font-medium mt-3 text-xl dark:text-gray-100 text-gray-900 justify-self-end">
                 Clear All
@@ -85,7 +83,7 @@ function CartModal({ show, handleClose }) {
                 Total Price
               </p>
               <button className="font-semibold mt-3 text-2xl dark:text-gray-100 text-gray-900 justify-self-end">
-                0 ETH
+                0.58 ETH
               </button>
             </div>
             <button className="text-white font-medium text-xl bg-indigo-600 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 rounded-lg px-6 py-3 text-center dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:focus:ring-indigo-800">

@@ -71,10 +71,41 @@ function CollectionTab(props) {
       ],
     },
   ];
-  var items = [];
-  for (var i = 0; i < 15; i++) {
-    items.push(i);
-  }
+  var items = [
+    {
+      source: "https://picsum.photos/id/15/700/900",
+      name: "Fire",
+      price: "0.12 ETH",
+    },
+    {
+      source: "https://picsum.photos/id/25/700/900",
+      name: "Ice",
+      price: "0.1 ETH",
+    },
+    {
+      source: "https://picsum.photos/id/55/700/900",
+      name: "Water",
+      price: "0.09 ETH",
+    },
+    {
+      source: "https://picsum.photos/id/52/700/900",
+      name: "Color",
+      price: "0.1 ETH",
+    },
+    {
+      source: "https://picsum.photos/id/23/700/900",
+      name: "Dread",
+      price: "0.34 ETH",
+    },
+    {
+      source: "https://picsum.photos/id/10/700/900",
+      name: "heart",
+      price: "0.03 ETH",
+    },
+  ];
+  // for (var i = 0; i < 15; i++) {
+  //   items.push(i);
+  // }
   return (
     <div>
       <div className="grid flex">
@@ -198,13 +229,6 @@ function CollectionTab(props) {
         {/* Filters */}
         <form className="hidden lg:block">
           <h3 className="sr-only">Categories</h3>
-          <ul className="space-y-4 border-b-2 border-gray-200 text-xl font-medium text-gray-900 dark:text-gray-100 text-left dark:border-b dark:border-gray-600">
-            {subCategories.map((category) => (
-              <li key={category.name} className="">
-                <a href={category.href}>{category.name}</a>
-              </li>
-            ))}
-          </ul>
 
           {filters.map((section) => (
             <Disclosure
@@ -260,7 +284,11 @@ function CollectionTab(props) {
         <div className="lg:col-span-3">
           <div className="grid grid-cols-4 lg:grid-cols-3">
             {items.map((item) => (
-              <DetailCard />
+              <DetailCard
+                source={item.source}
+                name={item.name}
+                price={item.price}
+              />
             ))}
           </div>
         </div>

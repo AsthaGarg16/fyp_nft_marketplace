@@ -31,31 +31,31 @@ import Table from "./Table";
 function TabList(props) {
   const table = [
     {
-      CollectionImage: "",
+      CollectionImage: "https://picsum.photos/100/200",
+      CollectionName: "Title",
+      FloorPrice: "2ETH",
+      Volume: "16",
+    },
+    {
+      CollectionImage: "https://picsum.photos/100/200",
+      CollectionName: "This fire",
+      FloorPrice: "$299",
+      Volume: "2000",
+    },
+    {
+      CollectionImage: "https://picsum.photos/100/200",
       CollectionName: "Name of collection",
       FloorPrice: "$299",
       Volume: "2000",
     },
     {
-      CollectionImage: "",
+      CollectionImage: "https://picsum.photos/100/200",
       CollectionName: "Name of collection",
       FloorPrice: "$299",
       Volume: "2000",
     },
     {
-      CollectionImage: "",
-      CollectionName: "Name of collection",
-      FloorPrice: "$299",
-      Volume: "2000",
-    },
-    {
-      CollectionImage: "",
-      CollectionName: "Name of collection",
-      FloorPrice: "$299",
-      Volume: "2000",
-    },
-    {
-      CollectionImage: "",
+      CollectionImage: "https://picsum.photos/100/200",
       CollectionName: "Name of collection",
       FloorPrice: "$299",
       Volume: "2000",

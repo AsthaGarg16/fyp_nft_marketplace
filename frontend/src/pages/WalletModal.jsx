@@ -40,7 +40,7 @@ function WalletModal({ show, handleClose }) {
                 Your wallet
               </h3>
               <p className="mx-3 text-lg text-gray-600 dark:text-gray-400 place-self-center">
-                Address wallet
+                0x323...262F
               </p>
             </div>
 
@@ -51,7 +51,7 @@ function WalletModal({ show, handleClose }) {
                   Total Funds
                 </p>
                 <h4 className="mb-4 text-3xl mx-3 font-bold text-gray-900 dark:text-white text-center">
-                  $0.00
+                  2.1274 GoerliETH
                 </h4>
               </div>
             </div>

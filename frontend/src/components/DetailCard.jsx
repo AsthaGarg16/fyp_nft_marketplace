@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-function DetailCard() {
+function DetailCard(props) {
   const navigate = useNavigate();
   function GoToItem(address) {
     //go to collection
@@ -15,7 +15,7 @@ function DetailCard() {
         <div className="card-zoom2">
           <div className="card-zoom-image">
             <img
-              src={require("../assets/nft.jpg")}
+              src={props.source}
               alt="nft"
               className="object-cover h-64 w-96"
             />
@@ -25,14 +25,14 @@ function DetailCard() {
 
       <div className="px-5 pb-5">
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Apple Watch Series 7 GPS
+          {props.name}
         </h5>
 
         <div className="flex items-center mt-2.5 mb-2.5"></div>
         <div className="grid grid-cols-2">
           <div>
             <span className="text-3xl grid justify-items-start font-bold text-gray-900 dark:text-white">
-              $599
+              {props.price}
             </span>
           </div>
 

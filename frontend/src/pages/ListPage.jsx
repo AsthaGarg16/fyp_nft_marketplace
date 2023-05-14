@@ -3,13 +3,14 @@ import { useScrollTo } from "../components/Scroll";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import contractAddresses from "../constants/contractAddresses.json";
 import marketplaceAbi from "../constants/NftMarketplace.json";
+import nftAbi from "../constants/Basic_Nft.json";
+import { ethers } from "ethers";
 
 function ListPage(nftAddress, tokenId, quantity) {
   const { chainId } = useMoralis();
   const { runContractFunction } = useWeb3Contract();
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
-  const marketplaceAddress =
-    contractAddresses[chainString]["NftMarketplace"][1];
+  const marketplaceAddress = contractAddresses["5"]["NftMarketplace"][1];
 
   //check is msg.sender is the owner and if it is listed, display buttons accordingly (to buy, add to cart)
 
@@ -27,6 +28,33 @@ function ListPage(nftAddress, tokenId, quantity) {
     console.log(formJson);
     //call listItemForSale
   }
+
+  async function approveAndList() {
+    console.log("Approving...");
+    const nftAddress = "0x61bD8747Fa57F4E8A73D0a5B91827a43e50Fc9Cf";
+    const tokenId = "1";
+    const price = ethers.utils.parseUnits("0.02", "ether").toString();
+
+    const approveOptions = {
+      abi: nftAbi,
+      contractAddress: nftAddress,
+      functionName: "approve",
+      params: {
+        to: marketplaceAddress,
+        tokenId: tokenId,
+      },
+    };
+
+    await runContractFunction({
+      params: approveOptions,
+      onSuccess: (tx) => handleApproveSuccess(tx, nftAddress, tokenId, price),
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  function handleApproveSuccess() {}
 
   async function listItemForSale(json) {
     const listing = {
@@ -58,13 +86,13 @@ function ListPage(nftAddress, tokenId, quantity) {
 
   return (
     <div>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-2">
         <form method="post" onSubmit={handleSubmit}>
-          <div className="col-span-2">
+          <div className="col-span-1">
             <h1 className="mb-4 text-5xl font-bold leading-none text-gray-900 md:text-3xl lg:text-5xl dark:text-white text-left">
               List Item for sale
             </h1>
-            <div>
+            <div className="m-10">
               <label
                 htmlFor="name"
                 className="text-2xl font-medium text-gray-700 undefined dark:text-gray-200"
@@ -89,7 +117,7 @@ function ListPage(nftAddress, tokenId, quantity) {
                 </span>
               </label>
             </div>
-            <div className="mt-5">
+            <div className="m-10 text-left">
               <label
                 htmlFor="price"
                 className="text-2xl font-medium text-gray-700 undefined dark:text-gray-200"
@@ -99,13 +127,14 @@ function ListPage(nftAddress, tokenId, quantity) {
               <div className="flex flex-col items-start">
                 <input
                   type="text"
+                  value={0.02}
                   name="price"
                   className="w-full pb-2 pl-3 pt-2 mt-2 mr-2 text-lg border-gray-300 border-4 dark:border-4 rounded-lg shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-600 focus:ring-opacity-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-500"
-                />
+                ></input>
               </div>
             </div>
 
-            <div className="mt-5">
+            <div className="m-10 text-left">
               <label
                 htmlFor="fees"
                 className="text-2xl font-medium text-gray-700 undefined dark:text-gray-200"
@@ -114,28 +143,34 @@ function ListPage(nftAddress, tokenId, quantity) {
               </label>
               <div className="flex flex-col items-start">
                 <p className="text-md text-gray-800 dark:text-gray-400">
-                  Service Fees
+                  Service Fees 1.0%
                 </p>
                 <p className="text-md text-gray-800 dark:text-gray-400">
-                  Creator Fees
+                  Creator Fees 3.0%
                 </p>
               </div>
             </div>
           </div>
         </form>
 
-        <div className="col-span-1">
+        <div className="col-span-1 m-10">
           <label
             htmlFor="Preview"
             className="text-2xl font-medium text-gray-700 undefined dark:text-gray-200"
           >
             Preview
           </label>
+          <img
+            src={require("../assets/nft9.jpg")}
+            alt="nft"
+            className="object-contain rounded-xl"
+          />
         </div>
       </div>
       <button
-        className="p-5 bg-indigo-600 rounded-lg text-2xl font-semibold mb-10 text-white"
+        className="p-5 bg-indigo-600 rounded-lg text-2xl font-semibold mb-10 text-white mt-10"
         type="submit"
+        onClick={approveAndList}
       >
         List Item
       </button>
